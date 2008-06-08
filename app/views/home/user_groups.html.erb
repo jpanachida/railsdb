@@ -1,0 +1,44 @@
+<h2><%= link_to 'Users', :controller => 'home', :action => 'users' %> &#187; <%= @user.lname %>, <%= @user.fname %> Groups</h2>
+
+<table class="data">
+<thead>
+<tr>
+  <td colspan="2">Group</td>
+</tr>
+</thead>
+<tbody>
+
+<% if @user_groups.size > 0 -%>
+
+<%= render :partial => 'home/user_group', :collection => @user_groups %>
+
+<% else -%>
+
+<tr class="alt">
+  <td colspan="2">No user groups found</td>
+</tr>
+
+<% end -%>
+
+</tbody>
+</table>
+
+<% form_tag :controller => 'home', :action => 'add_user_group' do -%>
+<%= hidden_field_tag 'user_id', @user.id %>
+
+<table class="form">
+<thead>  
+<tr class="label">
+  <td colspan="2">Add Group</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td><%= select_tag 'group_id', '<option value="">&nbsp;</option>' + options_from_collection_for_select( @groups, 'id', 'name' ) %></td>
+  <td><%= submit_tag 'Add' %></td>
+</tr>
+</tbody>
+</table>
+
+<% end -%>
+

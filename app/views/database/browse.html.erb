@@ -1,0 +1,30 @@
+<h2><%= link_to 'Databases', :controller => :home, :action => :databases %> &#187; <%= link_to "&quot;#{ h @database.name }&quot; Database", :controller => :database, :id => @database %> &#187; &quot;<%= h @table.name %>&quot; Table</h2>
+
+<table class="data">
+<thead>
+<% if @total_pages > 1 -%>
+<tr>
+  <td colspan="<%= @fields.size + 2 %>"><%= row_pagination( @total_pages ) %></td>
+</tr>
+<% end -%>
+<tr>
+  <% @fields.each do |f| -%>
+  <td><%= h f %></td>
+  <% end -%>
+  <td colspan="2"><%= link_to 'Add Data', { :controller => :database,
+                                            :action     => :insert,
+                                            :id         => @database,
+                                            :table      => @table.name },
+                                          :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @page.items.size > 0 -%>
+<%= render :partial => 'database/row', :collection => @page.items %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="<%= @fields.size + 2 %>">No rows found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>

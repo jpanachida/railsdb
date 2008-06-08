@@ -1,0 +1,17 @@
+** Daemonized, any open files are closed.  Look at /Users/destiney/rails/railsdb/tmp/pids/mongrel.pid and log/mongrel.log for info.
+** Starting Mongrel listening at 0.0.0.0:3000
+** Starting Rails with bugger environment...
+/usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:206:in `read': No such file or directory - /Users/destiney/rails/railsdb/config/environments/bugger.rb (Errno::ENOENT)
+	from /usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:206:in `load_environment'
+	from /usr/local/lib/ruby/gems/1.8/gems/activesupport-2.0.2/lib/active_support/core_ext/kernel/reporting.rb:11:in `silence_warnings'
+	from /usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:199:in `load_environment'
+	from /usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:91:in `process'
+	from /usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:49:in `send'
+	from /usr/local/lib/ruby/gems/1.8/gems/rails-2.0.2/lib/initializer.rb:49:in `run'
+	from /Users/destiney/rails/railsdb/config/environment.rb:13
+	from /usr/local/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:27:in `gem_original_require'
+	 ... 10 levels...
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.1.3/bin/../lib/mongrel/command.rb:212:in `run'
+	from /usr/local/lib/ruby/gems/1.8/gems/mongrel-1.1.3/bin/mongrel_rails:281
+	from /usr/local/bin/mongrel_rails:19:in `load'
+	from /usr/local/bin/mongrel_rails:19

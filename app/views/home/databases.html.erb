@@ -1,0 +1,22 @@
+<h2>Databases</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Name</td>
+  <td>Description</td>
+  <td>Driver</td>
+  <td>Tables</td>
+  <td colspan="2"><%= link_to 'Add Database', { :controller => 'home', :action => 'add_database' }, :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @databases.size > 0 -%>
+<%= render :partial => 'home/database', :collection => @databases %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="6">No databases found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>

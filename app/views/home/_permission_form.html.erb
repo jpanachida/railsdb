@@ -1,0 +1,32 @@
+<% form_for :permission do |f| -%>
+
+<table class="form">
+<thead>  
+<tr>
+  <td colspan="2">Permission Form</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td>Name:</td>
+  <td><%= f.text_field :name, :size => 18 %>
+    <% if @permission.errors['name'] -%>
+      <span class="error"><%= @permission.errors['name'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>Description:</td>
+  <td><%= f.text_area :description, :rows => 3, :cols => 16 %>
+    <% if @permission.errors['description'] -%>
+      <span class="error"><%= @permission.errors['description'] %></span>
+    <% end -%></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="2"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

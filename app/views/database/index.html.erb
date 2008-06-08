@@ -1,0 +1,23 @@
+<h2><%= link_to 'Databases', :controller => :home, :action => :databases %> &#187; &quot;<%= h @database.name %>&quot; Database</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Table</td>
+  <td>Rows</td>
+  <td><%= link_to 'Add Table', {  :controller => :database,
+                                  :id         => @database,
+                                  :action     => :add_table },
+                                  :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @tables.size > 0 -%>
+<%= render :partial => 'database/table', :collection => @tables %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="4">No tables found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>

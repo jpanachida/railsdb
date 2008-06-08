@@ -1,0 +1,14 @@
+Pages:&nbsp;
+<%= link_to( '&#171;', :page => @page.first.number ) + '&nbsp;' if @link_span < @current_page %>
+<%= link_to( '&lt;', :page => @page.prev.number ) + '&nbsp;' if @page.prev? %>
+<% @pager.each do |page| -%>
+  <% if @current_page < ( page.number + @link_span ) && @current_page > ( page.number - @link_span ) -%>
+    <% if page.number == @current_page -%>
+      <span class="selected"><%= "[ #{page.number} ]" %></span>
+    <% else -%>
+      <%= link_to( "[ #{page.number} ]", :page => page.number ) %>
+    <% end -%>
+  <% end -%>
+<% end -%>
+<%= '&nbsp;' + link_to( '&gt;', :page => @page.next.number ) if @page.next? %>
+<%= '&nbsp;' + link_to( '&#187;', :page => @page.last.number ) if ( @total_pages - @current_page ) >= @link_span %>

@@ -1,0 +1,31 @@
+<h2><%= link_to 'Databases', :controller => 'home', :action => 'databases' %> &#187; <%= link_to "&quot;#{ h @database.name }&quot; Database", :controller => :database, :id => @database %> &#187; <%= link_to "&quot;#{ h @table.name }&quot; Table", :controller => :database, :action => :table, :id => @database, :table => (h @table.name) %> &#187; Delete Field &quot;<%= h @field.name %>&quot;</h2>
+
+<table class="form">
+<thead>  
+<tr>
+  <td>Delete Confirmation</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td>Are you sure you want to delete this field?<br /><br />All data associated with this field will also be deleted.</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td align="right">
+  <table class="tight">
+  <tr>
+    <% form_tag( { :controller => :database, :action => :table, :id => @database, :table => (h @table.name) }, :method => 'get' ) do -%>
+    <td class="cancel"><input type="submit" name="submit" value="Cancel"></td>
+    <% end -%>
+    <% form_for :database do |f| -%>
+    <%= f.hidden_field :id, :value => @database.id %>
+    <td><input type="submit" name="submit" value="Delete"></td>
+    <% end -%>
+  </tr>
+  </table>
+  </td>
+</tr>
+</tfoot>
+</table>

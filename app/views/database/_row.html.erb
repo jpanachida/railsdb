@@ -1,0 +1,16 @@
+<tr<%= alt %>>
+  <% @fields.each do |f| -%>
+  <td><%= h row[f] %></td>
+  <% end -%>
+  <td class="c"><%= link_to 'Edit', :controller => :database,
+                                    :action     => :edit_row,
+                                    :id         => @database,
+                                    :table      => (h @table.name),
+                                    :pk         => row['id'] %></td>
+  <td class="c"><%= link_to 'Del', { :controller => :database                                  ,
+                                     :action     => :del_row,
+                                     :id         => @database,
+                                     :table      => (h @table.name),
+                                     :pk         => row['id'] },
+                                   :confirm => 'Are you sure?' %></td>
+</tr>

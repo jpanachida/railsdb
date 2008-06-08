@@ -1,0 +1,66 @@
+== RailsDB
+
+{RailsDB}[http://railsdb.org/] is a web application written in Ruby using the Ruby on Rails web framework to provide a generic interface to popular open source databases such as MySQL, PostgreSQL, and SQLite.
+
+=== Prerequisites and Assumptions
+
+- {Ruby}[http://www.ruby-lang.org/] and {Ruby on Rails}[http://rubyonrails.com/] are required to run RailsDB.  Please visit those sites for installation instructions.
+- Rails depends on a stable version of Ruby, {version 1.8.6 is being recommended}[http://rubyonrails.com/down] currently.
+- RailsDB may at any time depend on a specific version of Rails. Using something close to that version will usually work as well.  Check or update the RAILS_GEM_VERSION in config/environment.db as required.
+
+- You can install a specific version of Rails using gem, for example:
+
+    gem install rails -v=2.0.2
+
+- RailsDB is installed using rake commands.  Install rake:
+
+    gem install rake
+
+- Using RailsDB with SQLite requires the sqlite3-ruby gem.
+
+    gem install sqlite3-ruby
+
+- Using RailsDB with MySQL requires the mysql gem.
+
+    gem install mysql
+    
+    or
+    
+    gem install mysql -- --with-mysql-dir=/usr/local/mysql
+
+- Using RailsDB with PostgreSQL requires the postgres gem.
+
+    gem install postgres
+    
+- RailsDB requires the paginator gem.
+
+    gem install paginator
+
+- Information about Ruby Gems and how to install new Gems can be found {here}[http://rubygems.org/].
+
+=== Install RailsDB
+
+- Assuming a "development" environment (adjust for "production"), migrate the local SQLite database:
+
+    RAILS_ENV=development rake db:migrate
+
+- If something goes wrong or you need to try again you can undo the migration back to the beginning:
+    
+    RAILS_ENV=development rake db:migrate VERSION=0
+    
+- If you do not wish to use SQLite, then have a look at config/database.yml and setup another option.
+    
+- Start server:
+
+    script/server
+
+- Browse to http://localhost:3000
+
+- Login with:
+
+    u: railsdb
+    p: changeme
+
+=== Finally..
+
+Run "rake doc:app" to regenerate API documentation for the models, controllers, helpers, and libraries.

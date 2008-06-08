@@ -1,0 +1,10 @@
+<tr<%= alt %>>
+  <td><%= h user.lname %>, <%= h user.fname %></td>
+  <td><% if user.groups.size > 0 -%>
+    <%= link_to user.groups.collect { |g| x=''; x << g.name }.sort.join(', '), :controller => 'home', :action => 'user_groups', :id => user.id %>
+    <% else -%>
+    <%= link_to 'no groups found', :controller => 'home', :action => 'user_groups', :id => user.id %>
+    <% end -%></td>
+  <td><%= link_to 'Edit', :controller => 'home', :action => 'edit_user', :id => user.id %></td>
+  <td><%= link_to 'Del', :controller => 'home', :action => 'del_user', :id => user.id %></td>
+</tr>

@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title><%= SITE_TITLE %></title>
+<script language="javascript" type="text/javascript">
+if(top.location != self.location) top.location = self.location;
+</script>
+<base target="main" />
+</head>
+<frameset rows="60,*,17" border="0" frameborder="0">
+<frame src="<%= url_for :controller => 'home', :action => 'top' %>" name="top" border="0" frameborder="0" />
+<frameset cols="160,*" border="0" frameborder="0">
+<frame src="<%= url_for :controller => 'home', :action => 'menu' %>" name="menu" border="0" frameborder="0" />
+<frame src="<%= url_for :controller => 'home', :action => 'databases' %>" name="main" border="0" frameborder="0" />
+</frameset>
+<frame src="<%= url_for :controller => 'home', :action => 'bottom' %>" name="bottom" border="0" frameborder="0" />
+</frameset>
+</html>

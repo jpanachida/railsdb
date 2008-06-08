@@ -1,0 +1,32 @@
+<h2><%= link_to 'Drivers', :controller => 'home', :action => 'drivers' %> &#187; Delete Driver</h2>
+
+<table class="form">
+<thead>  
+<tr>
+  <td>Delete Confirmation</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td>Are you sure you want to delete this driver?<br /><br />All data associated with this driver will also be deleted.</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td align="right">
+  <table class="tight">
+  <tr>
+    <% form_tag( { :controller => 'home', :action => 'drivers' }, :method => 'get' ) do -%>
+    <td class="cancel"><input type="submit" name="submit" value="Cancel"></td>
+    <% end -%>
+    <% form_for :driver do |f| -%>
+    <%= f.hidden_field :id, :value => @driver.id %>
+    <td><input type="submit" name="submit" value="Delete"></td>
+    <% end -%>
+  </tr>
+  </table>
+  </td>
+</tr>
+</tfoot>
+</table>
+

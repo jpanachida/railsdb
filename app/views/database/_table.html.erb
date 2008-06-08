@@ -1,0 +1,22 @@
+<tr<%= alt %>>
+  <td><%= link_to (h table.name), :controller => :database,
+                                  :id         => @database,
+                                  :action     => :table,
+                                  :table      => (h table.name) %></td>
+  <td class="c"><% if table.row_count.zero? -%>
+    <%= link_to table.row_count, { :controller => :database,
+                                   :id         => @database,
+                                   :table      => (h table.name),
+                                   :action     => :insert } %>
+  
+  <% else -%>  
+    <%= link_to table.row_count, { :controller => :database,
+                                   :id         => @database,
+                                   :table      => (h table.name),
+                                   :action     => :browse } %>
+  <% end -%></td>
+  <td class="c"><%= link_to 'Del', :controller => :database,
+                                   :id         => @database,
+                                   :action     => :del_table,
+                                   :table      => (h table.name) %></td>
+</tr>

@@ -1,0 +1,43 @@
+<tr<%= alt %> id="field-<%= x %>">
+  <td class="label">Field <%= x %>:</td>
+  <td><%= text_field_tag  "fields[#{ x }][name]",
+                          ( ( h session[:fields][x.to_s][:name] ) rescue nil ),
+                          :size => 16 %>
+    <% if ( @errors[:fields][x.to_s][:name] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:name] %></span>
+    <% end -%></td>
+  <td><%= select_tag  "fields[#{ x }][type]",
+                      get_options(  field_type_options( @database.driver.name ),
+                                    ( session[:fields][x.to_s][:type] rescue nil ) ) %>
+    <% if ( @errors[:fields][x.to_s][:type] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:type] %></span>
+    <% end -%></td>
+  <td><%= radio_button_tag "fields[#{ x }][null]", '1', ( session[:fields][x.to_s][:null] rescue '0' ) == '1' %> Yes <%= radio_button_tag "fields[#{ x }][null]", '0', ( session[:fields][x.to_s][:null] rescue '0' ) == '0' %> No
+    <% if ( @errors[:fields][x.to_s][:null] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:null] %></span>
+    <% end -%></td>
+  <td><%= text_field_tag  "fields[#{ x }][default]",
+                          ( ( h session[:fields][x.to_s][:default] ) rescue nil ),
+                          :size => 10 %>
+    <% if ( @errors[:fields][x.to_s][:default] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:default] %></span>
+    <% end -%></td>
+  <td><%= text_field_tag  "fields[#{ x }][limit]",
+                          ( ( h session[:fields][x.to_s][:limit] ) rescue nil ),
+                          :size => 4 %>
+    <% if ( @errors[:fields][x.to_s][:limit] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:limit] %></span>
+    <% end -%></td>
+  <td><%= text_field_tag  "fields[#{ x }][scale]",
+                          ( ( h session[:fields][x.to_s][:scale] ) rescue nil ),
+                          :size => 4 %>
+    <% if ( @errors[:fields][x.to_s][:scale] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:scale] %></span>
+    <% end -%></td>
+  <td class="c"><%= text_field_tag  "fields[#{ x }][precision]",
+                          ( ( h session[:fields][x.to_s][:precision] ) rescue nil ),
+                          :size => 4 %>
+    <% if ( @errors[:fields][x.to_s][:precision] rescue nil ) -%>
+      <br /><span class="error"><%= @errors[:fields][x.to_s][:precision] %></span>
+    <% end -%></td>
+</tr><%# TODO: Get rid of "rescue nil" %>

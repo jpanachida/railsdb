@@ -1,0 +1,28 @@
+<% form_for :field do |f| -%>
+
+<table class="form">
+<thead>  
+<tr>
+  <td colspan="8">New Field Form</td>
+</tr>
+<%= render :partial => 'database/new_field_header' %>
+</thead>
+<tbody>
+<% 1.upto( session[:field_blanks] ) do |x| -%>
+<%= render :partial => 'database/new_field', :locals => { :x => x } %>
+<% end -%>
+<tr<%= alt %> id="blank_field">
+  <td colspan="8" class="c"><%= link_to_remote 'Blank Field', {
+                                                :url => { :controller => :database,
+                                                          :id         => @database,
+                                                          :action     => :blank_field } } %></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="8"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

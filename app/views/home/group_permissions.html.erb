@@ -1,0 +1,38 @@
+<h2><%= link_to 'Groups', :controller => 'home', :action => 'groups' %> &#187; &quot;<%= @group.name %>&quot; Permissions</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td colspan="2">Group</td>
+</tr>
+</thead>
+<tbody>
+<% if @group_permissions.size > 0 -%>
+<%= render :partial => 'home/group_permission', :collection => @group_permissions %>
+<% else -%>
+<tr class="alt">
+  <td colspan="2">No group permissions found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>
+
+<% form_tag :controller => 'home', :action => 'add_group_permission' do -%>
+<%= hidden_field_tag 'group_id', @group.id %>
+
+<table class="form">
+<thead>
+<tr>
+  <td colspan="2">Add Permission</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td><%= select_tag 'permission_id', '<option value="">&nbsp;</option>' + options_from_collection_for_select( @permissions, 'id', 'name' ) %></td>
+  <td><%= submit_tag 'Add' %></td>
+</tr>
+</tbody>
+</table>
+
+<% end -%>
+

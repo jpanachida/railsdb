@@ -1,0 +1,25 @@
+<% form_for :group do |f| -%>
+
+<table class="form">
+<thead>  
+<tr>
+  <td colspan="2">Group Form</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td>Name:</td>
+  <td><%= f.text_field :name, :size => 16 %>
+    <% if @group.errors['name'] -%>
+      <span class="error"><%= @group.errors['name'] %></span>
+    <% end -%></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="2" align="right"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

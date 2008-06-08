@@ -1,0 +1,20 @@
+<h2>Groups</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Name</td>
+  <td>Permissions</td>
+  <td colspan="2" align="right"><%= link_to 'Add', { :controller => 'home', :action => 'add_group' }, :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @groups.size > 0 -%>
+<%= render :partial => 'home/group', :collection => @groups %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="4">No groups found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>

@@ -1,0 +1,3 @@
+<h2><%= link_to 'Databases', :action => :databases %> &#187; <%= link_to "&quot;#{ h @database.name }&quot; Database", :controller => :database, :action => :index, :id => @database %> &#187; <%= link_to "&quot;#{ h @table.name }&quot; Table", :controller => :database, :action => :browse, :id => @database, :table => @table.name %> &#187; Insert Data</h2>
+
+<%= render :partial => 'database/insert_form' %>

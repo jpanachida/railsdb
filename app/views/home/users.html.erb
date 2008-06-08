@@ -1,0 +1,27 @@
+<h2>Users</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Name</td>
+  <td>Groups</td>
+  <td colspan="2" align="right"><%= link_to 'Add', { :controller => 'home', :action => 'add_user' }, :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+
+<% if @users.size > 0 -%>
+
+<%= render :partial => 'home/user', :collection => @users %>
+
+<% else -%>
+
+<tr class="alt">
+  <td colspan="4">No users found</td>
+</tr>
+
+<% end -%>
+
+</tbody>
+</table>
+

@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: DatabaseController</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">DatabaseController</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/app/controllers/database_controller_rb.html">
+                app/controllers/database_controller.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="ApplicationController.html">
+                ApplicationController
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000010">add_fields</a>&nbsp;&nbsp;
+      <a href="#M000007">add_table</a>&nbsp;&nbsp;
+      <a href="#M000005">blank_field</a>&nbsp;&nbsp;
+      <a href="#M000003">browse</a>&nbsp;&nbsp;
+      <a href="#M000012">del_field</a>&nbsp;&nbsp;
+      <a href="#M000008">del_table</a>&nbsp;&nbsp;
+      <a href="#M000011">edit_field</a>&nbsp;&nbsp;
+      <a href="#M000001">edit_row</a>&nbsp;&nbsp;
+      <a href="#M000009">edit_table</a>&nbsp;&nbsp;
+      <a href="#M000004">index</a>&nbsp;&nbsp;
+      <a href="#M000002">insert</a>&nbsp;&nbsp;
+      <a href="#M000006">table</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name"><a href="Switch.html">Switch</a></span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">add_fields</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 161</span>
+161:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_fields</span>
+162:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+163:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+164:     <span class="ruby-ivar">@errors</span>           = {}
+165:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>]  = {}
+166:     <span class="ruby-identifier">field_errors</span>      = {}
+167:     <span class="ruby-identifier">field_types</span>       = <span class="ruby-identifier">get_field_types</span>( <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">driver</span>.<span class="ruby-identifier">name</span> )
+168:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+169:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
+170:         <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>] = {}
+171:         <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>] = <span class="ruby-value str">'at least one field required'</span>
+172:       <span class="ruby-keyword kw">end</span>
+173:       <span class="ruby-identifier">x</span> = <span class="ruby-value">1</span>
+174:       <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>]
+175:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
+176:           <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>] = {}
+177:           <span class="ruby-constant">FIELD_ATTRIBUTES</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span> }.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+178:             <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">k</span>]
+179:           <span class="ruby-keyword kw">end</span>
+180:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_types</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:type</span>]
+181:             <span class="ruby-identifier">field_errors</span>[<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>] = {}
+182:             <span class="ruby-identifier">field_errors</span>[<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:type</span>] = <span class="ruby-value str">'valid field type required'</span>
+183:           <span class="ruby-keyword kw">end</span>
+184:         <span class="ruby-keyword kw">end</span>
+185:         <span class="ruby-identifier">x</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+186:       <span class="ruby-keyword kw">end</span>
+187:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>].<span class="ruby-identifier">size</span>
+188:       <span class="ruby-ivar">@errors</span>[<span class="ruby-identifier">:fields</span>] = <span class="ruby-identifier">field_errors</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_errors</span>.<span class="ruby-identifier">size</span>.<span class="ruby-identifier">zero?</span>
+189:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+190:         <span class="ruby-keyword kw">begin</span>
+191:           <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">add_fields</span>( <span class="ruby-identifier">params</span> )
+192:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">RuntimeError</span>
+193:           <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;An error occured:&lt;br /&gt;&lt;br /&gt;#{ $!.to_s }&quot;</span>
+194:         <span class="ruby-keyword kw">else</span>
+195:           <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = <span class="ruby-keyword kw">nil</span>
+196:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'new fields added'</span>
+197:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:table</span>
+198:         <span class="ruby-keyword kw">end</span>
+199:       <span class="ruby-keyword kw">end</span>
+200:     <span class="ruby-keyword kw">end</span>
+201:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = ( <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> ) <span class="ruby-operator">?</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">:</span> <span class="ruby-value">5</span>
+202:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+          <a href="#M000007" class="method-signature">
+          <span class="method-name">add_table</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This parses through everything posted to create a <a
+href="DatabaseController.html#M000006">table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 91</span>
+ 91:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_table</span>
+ 92:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+ 93:     <span class="ruby-ivar">@errors</span>           = {}
+ 94:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>]  = {}
+ 95:     <span class="ruby-identifier">field_errors</span>      = {}
+ 96:     <span class="ruby-identifier">field_types</span>       = <span class="ruby-identifier">get_field_types</span>( <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">driver</span>.<span class="ruby-identifier">name</span> )
+ 97:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+ 98:       <span class="ruby-ivar">@errors</span>[<span class="ruby-value str">'name'</span>]   = <span class="ruby-value str">'invalid table name'</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/[\.0-9a-z\-_]{1,64}/</span>
+ 99:       <span class="ruby-ivar">@errors</span>[<span class="ruby-value str">'add_id'</span>] = <span class="ruby-value str">'selection required'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:add_id</span>].<span class="ruby-identifier">nil?</span>
+100:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
+101:         <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>] = {}
+102:         <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>] = <span class="ruby-value str">'at least one field required'</span>
+103:       <span class="ruby-keyword kw">end</span>
+104:       <span class="ruby-identifier">x</span> = <span class="ruby-value">1</span>
+105:       <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>]
+106:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
+107:           <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>] = {}
+108:           <span class="ruby-constant">FIELD_ATTRIBUTES</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span> }.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+109:             <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">k</span>]
+110:           <span class="ruby-keyword kw">end</span>
+111:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_types</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:type</span>]
+112:             <span class="ruby-identifier">field_errors</span>[<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>] = {}
+113:             <span class="ruby-identifier">field_errors</span>[<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>][<span class="ruby-identifier">:type</span>] = <span class="ruby-value str">'valid field type required'</span>
+114:           <span class="ruby-keyword kw">end</span>
+115:         <span class="ruby-keyword kw">end</span>
+116:         <span class="ruby-identifier">x</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+117:       <span class="ruby-keyword kw">end</span>
+118:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>].<span class="ruby-identifier">size</span>
+119:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:name</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/[\.0-9a-z\-_]{1,64}/</span>
+120:       <span class="ruby-ivar">@errors</span>[<span class="ruby-identifier">:fields</span>] = <span class="ruby-identifier">field_errors</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_errors</span>.<span class="ruby-identifier">size</span>.<span class="ruby-identifier">zero?</span>
+121:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+122:         <span class="ruby-keyword kw">begin</span>
+123:           <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">create_tbl</span>( <span class="ruby-identifier">params</span> )
+124:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">RuntimeError</span>
+125:           <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;An error occured:&lt;br /&gt;&lt;br /&gt;#{ $!.to_s }&quot;</span>
+126:         <span class="ruby-keyword kw">else</span>
+127:           <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = <span class="ruby-keyword kw">nil</span>
+128:           <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:name</span>] = <span class="ruby-keyword kw">nil</span>
+129:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'table created'</span>
+130:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:index</span>, <span class="ruby-identifier">:database</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:database</span>]
+131:         <span class="ruby-keyword kw">end</span>
+132:       <span class="ruby-keyword kw">end</span>
+133:     <span class="ruby-keyword kw">end</span>
+134:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] = ( <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span> ) <span class="ruby-operator">?</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">:</span> <span class="ruby-value">5</span>
+135:     <span class="ruby-ivar">@add_id_yes_checked</span> = <span class="ruby-keyword kw">true</span>
+136:     <span class="ruby-ivar">@add_id_no_checked</span>  = <span class="ruby-keyword kw">false</span>
+137:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:add_id</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:add_id</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'0'</span>
+138:       <span class="ruby-ivar">@add_id_yes_checked</span> = <span class="ruby-keyword kw">false</span>
+139:       <span class="ruby-ivar">@add_id_no_checked</span>  = <span class="ruby-keyword kw">true</span>
+140:     <span class="ruby-keyword kw">end</span>
+141:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="#M000005" class="method-signature">
+          <span class="method-name">blank_field</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Increments the session count for blank fields, then it&#8216;s RJS template
+loads the new <a href="DatabaseController.html#M000006">table</a> row
+partial into the <a href="DatabaseController.html#M000006">table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000005-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 74</span>
+74:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">blank_field</span>
+75:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+76:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:field_blanks</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+77:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+          <a href="#M000003" class="method-signature">
+          <span class="method-name">browse</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Get some rows from the <a href="DatabaseController.html#M000006">table</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000003-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">browse</span>
+38:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+39:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+40:     <span class="ruby-ivar">@fields</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">name</span> }
+41:     <span class="ruby-ivar">@link_span</span> = <span class="ruby-constant">LINK_SPAN</span>
+42:     <span class="ruby-ivar">@current_page</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>
+43:     <span class="ruby-ivar">@active_count</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">row_count</span>
+44:     <span class="ruby-ivar">@total_pages</span> = ( <span class="ruby-ivar">@active_count</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-constant">PER_PAGE</span>.<span class="ruby-identifier">to_f</span> ).<span class="ruby-identifier">ceil</span>
+45:     <span class="ruby-ivar">@order</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">first</span>
+46:     <span class="ruby-ivar">@order</span> = <span class="ruby-value str">'name'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'name'</span>
+47:     <span class="ruby-ivar">@order</span> = <span class="ruby-value str">'id'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">field_names</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'id'</span>
+48:     <span class="ruby-ivar">@pager</span> = <span class="ruby-operator">::</span><span class="ruby-constant">Paginator</span>.<span class="ruby-identifier">new</span>( <span class="ruby-ivar">@active_count</span>, <span class="ruby-constant">PER_PAGE</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">offset</span>, <span class="ruby-identifier">per_page</span><span class="ruby-operator">|</span>
+49:       <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">find</span>(  <span class="ruby-identifier">:all</span>,
+50:                     <span class="ruby-identifier">:limit</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">per_page</span>,
+51:                     <span class="ruby-identifier">:offset</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">offset</span>,
+52:                     <span class="ruby-identifier">:order</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@order</span> )
+53:     <span class="ruby-keyword kw">end</span>
+54:     <span class="ruby-ivar">@page</span> = <span class="ruby-ivar">@pager</span>.<span class="ruby-identifier">page</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>] )
+55:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">del_field</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 232</span>
+232:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">del_field</span>
+233:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+234:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+235:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">field_count</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+236:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'last field cannot be deleted, delete table instead'</span>
+237:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>
+238:     <span class="ruby-keyword kw">end</span>
+239:     <span class="ruby-identifier">get_field</span>( <span class="ruby-ivar">@table</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:field</span>] )
+240:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+241:       <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">del_field</span>( <span class="ruby-ivar">@field</span>.<span class="ruby-identifier">name</span> )
+242:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'field deleted'</span>
+243:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:table</span>, <span class="ruby-identifier">:table</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">name</span>
+244:     <span class="ruby-keyword kw">end</span>
+245:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">del_table</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This does just what you think it does, hope you had backups..
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 146</span>
+146:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">del_table</span>
+147:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+148:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+149:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+150:       <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">del_table</span>( <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">name</span> )
+151:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'table deleted'</span>
+152:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>
+153:     <span class="ruby-keyword kw">end</span>
+154:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="#M000011" class="method-signature">
+          <span class="method-name">edit_field</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 204</span>
+204:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_field</span>
+205:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+206:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+207:     <span class="ruby-identifier">get_field</span>( <span class="ruby-ivar">@table</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:field</span>] )
+208:     <span class="ruby-ivar">@errors</span>          = {}
+209:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>] = { <span class="ruby-value str">'1'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@field</span>.<span class="ruby-identifier">attributes</span> }
+210:     <span class="ruby-identifier">field_errors</span>     = { <span class="ruby-value str">'1'</span> =<span class="ruby-operator">&gt;</span> {} }
+211:     <span class="ruby-identifier">field_types</span>      = <span class="ruby-identifier">get_field_types</span>( <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">driver</span>.<span class="ruby-identifier">name</span> )
+212:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+213:       <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>] = <span class="ruby-value str">'field name required'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
+214:       <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:type</span>] = <span class="ruby-value str">'valid field type required'</span><span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_types</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">:type</span>]
+215:       <span class="ruby-constant">FIELD_ATTRIBUTES</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span> }.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+216:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:fields</span>][<span class="ruby-value str">'1'</span>][<span class="ruby-identifier">k</span>]
+217:       <span class="ruby-keyword kw">end</span>
+218:       <span class="ruby-ivar">@errors</span>[<span class="ruby-identifier">:fields</span>] = <span class="ruby-identifier">field_errors</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">field_errors</span>[<span class="ruby-value str">'1'</span>].<span class="ruby-identifier">size</span>.<span class="ruby-identifier">zero?</span>
+219:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+220:         <span class="ruby-keyword kw">begin</span>
+221:           <span class="ruby-ivar">@field</span>.<span class="ruby-identifier">update</span>( <span class="ruby-identifier">params</span> )
+222:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">RuntimeError</span>
+223:           <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;An error occured:&lt;br /&gt;&lt;br /&gt;#{ $!.to_s }&quot;</span>
+224:         <span class="ruby-keyword kw">else</span>
+225:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'field updated'</span>
+226:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:table</span>, <span class="ruby-identifier">:table</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">name</span>
+227:         <span class="ruby-keyword kw">end</span>
+228:       <span class="ruby-keyword kw">end</span>
+229:     <span class="ruby-keyword kw">end</span>
+230:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000001" class="method-detail">
+        <a name="M000001"></a>
+
+        <div class="method-heading">
+          <a href="#M000001" class="method-signature">
+          <span class="method-name">edit_row</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Modify a <a href="DatabaseController.html#M000006">table</a> row
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000001-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000001-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_row</span>
+11:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+12:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+13:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+          <a href="#M000009" class="method-signature">
+          <span class="method-name">edit_table</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 156</span>
+156:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_table</span>
+157:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+158:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+159:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+          <a href="#M000004" class="method-signature">
+          <span class="method-name">index</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+List the tables in a database.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000004-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 60</span>
+60:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+61:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+62:     <span class="ruby-keyword kw">begin</span>
+63:       <span class="ruby-ivar">@tables</span> = <span class="ruby-ivar">@database</span>.<span class="ruby-identifier">tables</span>
+64:     <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">RuntimeError</span>
+65:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-identifier">$!</span>.<span class="ruby-identifier">to_s</span>
+66:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:home</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:databases</span>
+67:     <span class="ruby-keyword kw">end</span>
+68:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
+
+        <div class="method-heading">
+          <a href="#M000002" class="method-signature">
+          <span class="method-name">insert</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Insert a row into a <a href="DatabaseController.html#M000006">table</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000002-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 18</span>
+18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert</span>
+19:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+20:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+21:     <span class="ruby-ivar">@fields</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">name</span> }
+22:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">post?</span>
+23:       <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>].<span class="ruby-identifier">to_sym</span>].<span class="ruby-identifier">size</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+24:         <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">create</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>].<span class="ruby-identifier">to_sym</span>][<span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>] )
+25:       <span class="ruby-keyword kw">end</span>
+26:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;#{ params[params[:table].to_sym].size } objects added&quot;</span>
+27:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:database</span>,
+28:                   <span class="ruby-identifier">:table</span>      =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">name</span>,
+29:                   <span class="ruby-identifier">:action</span>     =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:browse</span>,
+30:                   <span class="ruby-identifier">:id</span>         =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@database</span>
+31:     <span class="ruby-keyword kw">end</span>
+32:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+          <a href="#M000006" class="method-signature">
+          <span class="method-name">table</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Lists the fields in a <a href="DatabaseController.html#M000006">table</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000006-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/database_controller.rb, line 82</span>
+82:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table</span>
+83:     <span class="ruby-identifier">get_database</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] )
+84:     <span class="ruby-identifier">get_table</span>( <span class="ruby-ivar">@database</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:table</span>] )
+85:     <span class="ruby-ivar">@fields</span> = <span class="ruby-ivar">@table</span>.<span class="ruby-identifier">fields</span>
+86:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

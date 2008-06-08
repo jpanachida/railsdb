@@ -1,0 +1,32 @@
+<h2><%= link_to 'Permissions', :controller => 'home', :action => 'permissions' %> &#187; Delete Permission</h2>
+
+<table class="form">
+<thead>  
+<tr>
+  <td>Delete Confirmation</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td>Are you sure you want to delete this permission?<br /><br />All data associated with this permission will also be deleted.</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td align="right">
+  <table class="tight">
+  <tr>
+    <% form_tag( { :controller => 'home', :action => 'permissions' }, :method => 'get' ) do -%>
+    <td class="cancel"><input type="submit" name="submit" value="Cancel"></td>
+    <% end -%>
+    <% form_for :permission do |f| -%>
+    <%= f.hidden_field :id, :value => @permission.id %>
+    <td><input type="submit" name="submit" value="Delete"></td>
+    <% end -%>
+  </tr>
+  </table>
+  </td>
+</tr>
+</tfoot>
+</table>
+

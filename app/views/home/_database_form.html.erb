@@ -1,0 +1,68 @@
+<% form_for :database do |f| -%>
+
+<table class="form">
+<thead>  
+<tr>
+  <td colspan="2">Database Form</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td class="r">Driver:</td>
+  <td><%= f.select :driver_id, Driver.find( :all ).collect { |d| [ d.name, d.id ] }, { :include_blank => true } %>
+    <% if @database.errors['driver_id'] -%>
+      <span class="error"><%= @database.errors['driver_id'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="r">Name:</td>
+  <td><%= f.text_field :name, :size => 32 %>
+    <% if @database.errors['name'] -%>
+      <span class="error"><%= @database.errors['name'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="r">Description:</td>
+  <td><%= f.text_area :description, :rows => 3, :cols => 32 %>
+    <% if @database.errors['description'] -%>
+      <span class="error"><%= @database.errors['description'] %></span>
+    <% end -%></td>
+</tr>
+<!-- #TODO: hide path except for sqlite3 -->
+<tr<%= alt %> id="path">
+  <td class="r">Path:</td>
+  <td><%= f.text_field :path, :size => 32 %>
+    <% if @database.errors['path'] -%>
+      <span class="error"><%= @database.errors['path'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="r">Host:</td>
+  <td><%= f.text_field :host, :size => 24 %>
+    <% if @database.errors['host'] -%>
+      <span class="error"><%= @database.errors['host'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="r">Username:</td>
+  <td><%= f.text_field :username, :size => 16 %>
+    <% if @database.errors['username'] -%>
+      <span class="error"><%= @database.errors['username'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="r">Password:</td>
+  <td><%= f.password_field :password, :size => 16 %>
+    <% if @database.errors['password'] -%>
+      <span class="error"><%= @database.errors['password'] %></span>
+    <% end -%></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="2"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

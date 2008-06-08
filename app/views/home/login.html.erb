@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title><%= SITE_TITLE %> Login</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<script language="javascript" type="text/javascript">
+if(top.location != self.location) top.location = self.location;
+</script>
+<%= stylesheet_link_tag 'railsdb' %>
+</head>
+<body>
+<h1 style="text-align:center"><%= SITE_TITLE %></h1>
+<% form_tag :controller => 'home', :action => 'login' do -%>
+<% if flash[:notice] -%>
+<p class="error" style="text-align:center; margin: 8px 0 0 0;"><%= flash[:notice] %></p>
+<% end -%>
+<table class="form" style="margin: 10px auto;">
+<thead>
+<tr>
+  <td colspan="2">Login</td>
+</tr>
+</thead>
+<tbody>
+<tr class="alt2">
+  <td class="label">Username/Email:</td>
+  <td><%= text_field :login, 'username', :size => 12 %></td>
+</tr>
+<tr class="alt2">
+  <td class="label">Password:</td>
+  <td><%= password_field :login, 'password', :size => 12 %></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="2"><%= submit_tag 'Login', "class" => "button" %></td>
+</tr>
+</tfoot>
+</table>
+<% end -%>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<br />
+
+<% form_for :user do |f| -%>
+
+<table>
+<tr class="label">
+  <td colspan="2">User Form</td>
+</tr>
+<tr<%= alt %>>
+  <td>Site:</td>
+  <td><%= f.select :site_id, @sites.collect {|s| [ s.name, s.id ] } %>
+    <% if @user.errors['site_id'] -%>
+      <span class="error"><%= @user.errors['site_id'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>First Name:</td>
+  <td><%= f.text_field :fname, :size => 16 %>
+    <% if @user.errors['fname'] -%>
+      <span class="error"><%= @user.errors['fname'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>Last Name:</td>
+  <td><%= f.text_field :lname, :size => 16 %>
+    <% if @user.errors['lname'] -%>
+      <span class="error"><%= @user.errors['lname'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>VUNetID:</td>
+  <td><%= f.text_field :vunetid, :size => 12 %>
+    <% if @user.errors['vunetid'] -%>
+      <span class="error"><%= @user.errors['vunetid'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>Email:</td>
+  <td><%= f.text_field :email, :size => 24 %>
+    <% if @user.errors['email'] -%>
+      <span class="error"><%= @user.errors['email'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>Password:</td>
+  <td><%= f.password_field :password, :size => 16 %>
+    <% if @user.errors['password'] -%>
+      <span class="error"><%= @user.errors['password'] %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td>Confirm Password:</td>
+  <td><%= f.password_field :password_confirmation, :size => 16 %>
+    <% if @user.errors['password_confirmation'] -%>
+      <span class="error"><%= @user.errors['password_confirmation'] %></span>
+    <% end -%></td>
+</tr>
+<tr class="label">
+  <td colspan="2" align="right"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+
+</table>
+
+<% end -%>

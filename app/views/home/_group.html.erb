@@ -1,0 +1,10 @@
+<tr<%= alt %>>
+  <td><%= h group.name %></td>
+  <td><% if group.permissions.size > 0 -%>
+    <%= link_to group.permissions.collect { |p| x=''; x << p.name }.sort.join('<br />'), :controller => 'home', :action => 'group_permissions', :id => group.id %>
+  <% else -%>
+    <%= link_to 'no permissions found', :controller => 'home', :action => 'group_permissions', :id => group.id %>
+  <% end -%></td>
+  <td><%= link_to 'Edit', :controller => 'home', :action => 'edit_group', :id => group.id %></td>
+  <td><%= link_to 'Del', :controller => 'home', :action => 'del_group', :id => group.id %></td>
+</tr>

@@ -1,0 +1,6 @@
+page.insert_html  :before,
+                  :blank_field,
+                  :partial  => 'database/new_field',
+                  :locals   => { :x => session[:field_blanks] }
+
+page.visual_effect :highlight, "field-#{ session[:field_blanks] }", :duration => 2

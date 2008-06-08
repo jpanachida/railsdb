@@ -1,0 +1,23 @@
+<h2><%= link_to 'Databases', :controller => 'home', :action => 'databases' %> &#187; <%= link_to "&quot;#{ h @database.name }&quot; Database", :controller => :database, :id => @database %> &#187; <%= link_to "&quot;#{ h @table.name }&quot; Table", :controller => :database, :action => :table, :table => (h @table.name) %> &#187; Edit Field &quot;<%= h @field.name %>&quot;</h2>
+
+<% form_for :field do |f| -%>
+
+<table class="form">
+<thead>  
+<tr>
+  <td colspan="8">Edit Field Form</td>
+</tr>
+</thead>
+<%= render :partial => 'database/new_field_header' %>
+<tbody>
+<%= render :partial => 'database/new_field', :locals => { :x => 1 } %>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="8"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>
+

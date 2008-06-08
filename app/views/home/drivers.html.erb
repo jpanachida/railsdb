@@ -1,0 +1,20 @@
+<h2>Drivers</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Name</td>
+  <td colspan="2" align="right"><%= link_to 'Add', { :controller => 'home', :action => 'add_driver' }, :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @drivers.size > 0 -%>
+<%= render :partial => 'home/driver', :collection => @drivers %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="3">No drivers found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>
+

@@ -1,0 +1,37 @@
+<% form_tag( {  :controller => :database,
+                :action     => :insert,
+                :id         => @database,
+                :table      => @table.name } ) do -%>
+
+<table class="form">
+<thead>
+<tr>
+  <td colspan="8">Insert Data Into &quot;<%= @table.name %>&quot; Table</td>
+</tr>
+<tr class="label">
+  <td>&nbsp;</td>
+  <% @table.field_names.each do |n| -%>
+  <% next if n == 'id' %>
+  <td><%= h n %></td>
+  <% end -%>
+</tr>
+</thead>
+<tbody>
+<% 5.times do |x| -%>
+<tr<%= alt %>>
+  <td><%= x.succ %></td>
+  <% @table.field_names.each do |n| -%>
+  <% next if n == 'id' %>
+  <td><%= text_field_tag "#{ @table.name }[#{ x.succ }][#{ n }]", '' %></td>
+  <% end -%>
+</tr>
+<% end -%>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="8"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

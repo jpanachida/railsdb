@@ -1,0 +1,45 @@
+<% form_tag( {  :controller => :database,
+                :action     => :add_table,
+                :id         => @database } ) do -%>
+
+<table class="form">
+<thead>
+<tr>
+  <td colspan="8"><%= controller.action_name == 'add_table' ? 'Add' : 'Edit' %> Table</td>
+</tr>
+</thead>
+<tbody>
+<tr<%= alt %>>
+  <td class="label">Table Name:</td>
+  <td colspan="7"><%= text_field_tag 'name', (h session[:name]), :size => 16 %>
+    <% if @errors['name'] -%>
+      <span class="error"><%= (h @errors['name']) %></span>
+    <% end -%></td>
+</tr>
+<tr<%= alt %>>
+  <td class="label">Automatic ID:</td>
+  <td colspan="7"><%= radio_button_tag 'add_id', '1', @add_id_yes_checked %> Yes
+                  <%= radio_button_tag 'add_id', '0', @add_id_no_checked %> No
+    <% if @errors['add_id'] -%>
+      <span class="error"><%= (h @errors['add_id']) %></span>
+    <% end -%></td>
+</tr>
+<%= render :partial => 'database/new_field_header' %>
+<% 1.upto( session[:field_blanks] ) do |x| -%>
+<%= render :partial => 'database/new_field', :locals => { :x => x } %>
+<% end -%>
+<tr<%= alt %> id="blank_field">
+  <td colspan="8" class="c"><%= link_to_remote 'Blank Field', {
+                                                :url => { :controller => :database,
+                                                          :id         => @database,
+                                                          :action     => :blank_field } } %></td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+  <td colspan="8"><input type="submit" name="submit" value="Submit"></td>
+</tr>
+</tfoot>
+</table>
+
+<% end -%>

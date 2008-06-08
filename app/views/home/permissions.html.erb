@@ -1,0 +1,21 @@
+<h2>Permissions</h2>
+
+<table class="data">
+<thead>  
+<tr>
+  <td>Name</td>
+  <td>Description</td>
+  <td colspan="2" align="right"><%= link_to 'Add', { :controller => 'home', :action => 'add_permission' }, :class => 'add' %></td>
+</tr>
+</thead>
+<tbody>
+<% if @permissions.size > 0 -%>
+<%= render :partial => 'home/permission', :collection => @permissions %>
+<% else -%>
+<tr<%= alt %>>
+  <td colspan="4">No permissions found</td>
+</tr>
+<% end -%>
+</tbody>
+</table>
+

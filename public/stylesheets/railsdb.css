@@ -1,0 +1,227 @@
+body, form
+{
+  margin:               0;
+  padding:              0;
+}
+
+body, td, p, h1, h2, h3, a
+{
+  font-size:            12px;
+  font-family:          sans-serif;
+  color:                #000;
+}
+
+h1
+{
+  font-size:            25px;
+  padding:              0;
+  margin:               40px 0 0 0;
+}
+
+h2
+{
+  padding:              0 0 0 10px;
+  margin:               8px 0 0 0;
+}
+
+a
+{
+  color:                #333;
+  background-color:     inherit;
+}
+
+a:hover
+{
+  color:                #000;
+  background-color:     inherit;
+}
+
+.data td.c, .form td.c
+{
+  text-align:           center;
+}
+
+.data td.r, .form td.r
+{
+  text-align:           right;
+}
+
+.alt
+{
+  color:                inherit;
+  background-color:     #eee;
+}
+
+.alt2
+{
+  color:                inherit;
+  background-color:     #ddd;
+}
+
+.selected
+{
+  color:                #000;
+  background-color:     #eee;
+  font-weight:          bold;
+  padding:              2px 1px 1px 1px;
+}
+
+.error
+{
+  color:                #f00;
+  background-color:     inherit;
+}
+
+p.error
+{
+    padding:             0 0 0 10px;
+}
+
+table.data, table.form
+{
+  margin:               10px;
+  border-collapse:      collapse;
+}
+
+table.data td, table.form td
+{
+  border:               1px solid #000;
+  padding:              5px;
+}
+
+table.data thead td, table.form thead td, table.data tfoot td, table.form tfoot td
+{
+  color:                #eee;
+  background-color:     #454545;
+}
+
+table.form thead tr.label td
+{
+  color:                #eee;
+  background-color:     #000;
+  font-size:            11px;
+  text-align:           center;
+  padding:              2px;
+}
+
+table.form tfoot td, table.form td.label, table.data td.add
+{
+  text-align:           right;
+}
+
+table.form tfoot td table
+{
+  float:                right;
+}
+
+table.form tfoot input
+{
+  font-size:            11px;
+  color:                #333;
+  background-color:     #c0c0c0;
+}
+
+table.data thead a
+{
+  color:                #ddd;
+  background-color:     inherit;
+}
+
+table.data thead a:hover
+{
+  color:                #fff;
+  background-color:     inherit;
+}
+
+#top
+{
+  width:                100%;
+  border-collapse:      collapse;
+  overflow:             hidden;
+}
+
+#top td
+{
+  padding:              0;
+}
+
+#top .l, #top .a
+{
+  text-align:           right;
+  padding:              5px 5px 1px 0;
+}
+
+#top .a
+{
+  font-size:            17px;
+}
+
+#top .l
+{
+  vertical-align:       bottom;
+  padding:              12px 5px 0 0;
+}
+
+#top .t
+{
+  font-size:            25px;
+  font-weight:          bold;
+  vertical-align:       bottom;
+  padding:              0 0 5px 8px;
+}
+
+#bottom
+{
+  width:                100%;
+}
+
+#bottom td
+{
+  font-size:            11px;
+  text-align:           right;
+  padding:              2px 2px 0 0;
+  vertical-align:       top;
+  height:               11px;
+}
+
+#menu
+{
+  width:                100%;
+  border-collapse:      collapse;
+  margin:               6px 0 0 0;
+}
+
+#menu td
+{
+  text-align:           right;
+  padding:              5px 10px 0 0;
+}
+
+#menu a
+{
+  font-size:            15px;
+  color:                #ccc;
+  background-color:     inherit;
+}
+
+#menu a:hover
+{
+  color:                #fff;
+  background-color:     inherit;
+}
+
+table.tight
+{
+  border-collapse:    collapse;
+}
+
+table.tight td
+{
+  border:             0;
+  padding:            0;
+}
+
+table.tight td.cancel
+{
+  padding:            0 5px 0 0;
+}

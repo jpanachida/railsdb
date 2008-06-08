@@ -1,0 +1,20 @@
+<tr<%= alt %>>
+  <td class="c"><%= field.cid %></td>
+  <td><%= h field.name %></td>
+  <td><%= h field.type %></td>
+  <td><%= field.null ? 'Yes' : 'No' %></td>
+  <td><%= h field.default %></td>
+  <td><%= h field.limit %></td>
+  <td><%= h field.scale %></td>
+  <td><%= h field.precision %></td>
+  <td><%= link_to 'Edit', :controller => :database,
+                          :id         => @database,
+                          :action     => :edit_field,
+                          :table      => (h @table.name),
+                          :field      => (h field.name) %></td>
+  <td><%= link_to 'Del',  :controller => :database,
+                          :id         => @database,
+                          :action     => :del_field,
+                          :table      => (h @table.name),
+                          :field      => (h field.name) %></td>
+</tr>
