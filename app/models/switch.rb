@@ -3,9 +3,11 @@
 # work with non- RailsDB application databases.
 #
 module Switch
-  
+
   #
-  # Add newly discovered broken table names in config/environment.rb.
+  # Switch RailsDB's database connection to a different database.
+  #
+  # (Add newly discovered broken table names in config/environment.rb.)
   #
   # This is magic:
   #
@@ -30,7 +32,7 @@ module Switch
       yield class_name.singularize.camelize.constantize
     end
   end
-  
+
   #
   # This method wraps work done to alternate databases
   #
@@ -79,5 +81,5 @@ module Switch
   def switch_back
     ActiveRecord::Base.establish_connection( RAILS_ENV.to_sym )
   end
-  
+
 end
