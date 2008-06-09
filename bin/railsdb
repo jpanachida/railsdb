@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'railsdb'
-
-path = ARGV[ 0 ]
-args = path.nil? ? { :rails_root => ENV[ 'PWD' ] } : { :rails_root => path }
-RailsDB.new( args ).create
