@@ -1,7 +1,18 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+railsdb:
+  id: 1
+  fname: Admin
+  lname: User
+  username: railsdb
+  email: user@example.com
+  passwd_hash: ce352d8077c562e07bd896b5a3f4d027bc1d834f
+  passwd_salt: dbffdca3a141dc3a33eec72104d5a54b0cbd42d8
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+other:
+  id: 2
+  fname: Other
+  lname: User
+  username: other
+  email: other@example.com
+  passwd_hash: xxx52d8077c562e07bd896b5a3f4d027bc1d8xxx
+  passwd_salt: xxxfdca3a141dc3a33eec72104d5a54b0cbd4xxx
+
