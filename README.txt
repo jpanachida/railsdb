@@ -15,23 +15,19 @@ http://railsdb.org/docs/
 
 Latest Release:
 
-https://sourceforge.net/project/showfiles.php?group_id=213772
+http://railsdb.org/src/
 
-Latest SVN:
+Git Access:
 
-svn co https://railsdb.svn.sourceforge.net/svnroot/railsdb railsdb
+git clone git://github.com/gdonald/railsdb.git railsdb
 
-Browse SVN:
+Browse Git Tree:
 
-http://railsdb.svn.sourceforge.net/viewvc/railsdb/
+http://github.com/gdonald/railsdb/tree/master
 
 Report Bugs:
 
-https://sourceforge.net/tracker/?group_id=213772&atid=1027042
-
-RailsDB release feed:
-
-http://sourceforge.net/export/rss2_projfiles.php?group_id=213772
+http://railsdb.lighthouseapp.com/projects/12472-railsdb/overview
 
 Contact
 
@@ -42,4 +38,3 @@ http://destiney.com/
 Ruby on Rails:
 
 For more information about Ruby on Rails see the RAILS_README.txt.
-
