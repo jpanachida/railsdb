@@ -4,12 +4,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title><%= SITE_TITLE %></title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <script language="javascript" type="text/javascript">
 if(top.location != self.location) top.location = self.location;
 </script>
 <base target="main" />
 </head>
-<frameset rows="60,*,17" border="0" frameborder="0">
+<frameset rows="60,*,18" border="0" frameborder="0">
 <frame src="<%= url_for :controller => 'home', :action => 'top' %>" name="top" border="0" frameborder="0" />
 <frameset cols="160,*" border="0" frameborder="0">
 <frame src="<%= url_for :controller => 'home', :action => 'menu' %>" name="menu" border="0" frameborder="0" />
