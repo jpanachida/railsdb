@@ -1,6 +1,4 @@
 
-require 'rake'
-
 Gem::Specification.new do |s|
 
   s.name              = 'railsdb'
@@ -18,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency( 'rails', [ '= 2.0.2' ] )
 
-  files = FileList[ "#{ File.dirname( __FILE__ ) }/**/*" ].to_a.sort
+  files = Dir.glob( "#{ File.dirname( __FILE__ ) }/**/*" ).to_a.sort
   s.files = files.delete_if do |f|
     f.include?( '.gem'     ) || \
     f.include?( '.log'     ) || \
