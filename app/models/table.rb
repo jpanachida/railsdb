@@ -1,18 +1,18 @@
 class Table
-  
+
   include Switch
-  
+
   attr_accessor :database
   attr_accessor :name
   attr_accessor :driver
-  
+
   #
   # Assign the database this table belongs to and it's name
   #
   def initialize( database, name )
     self.database = database
     self.name     = name
-    self.driver   = self.database.driver
+    self.driver   = database.driver
   end
 
   #
@@ -71,7 +71,7 @@ class Table
   def find( *args )
     switch_ar( self.database, self.name ) { |c| o = c.find( *args ).collect{ |r| r.attributes } }
   end
-  
+
   #
   # This method gets the row count for this table.
   #
@@ -85,7 +85,7 @@ class Table
   def field_names
     self.fields.collect { |f| f.name }.sort
   end
-  
+
   #
   # Does this table contain a filed with passed name?
   #
@@ -93,14 +93,14 @@ class Table
     self.field_names.each { |f| return true if f == name }
     false
   end
-  
+
   #
   # How many fields in this table
   #
   def field_count
     self.fields.size
   end
-  
+
   #
   # Returns a single field by name
   #
@@ -108,7 +108,7 @@ class Table
     self.fields.each { |f| return f if f.name == name }
     nil
   end
-  
+
   #
   # This method maps the field attributes for a table into known named
   # keys, required mostly because sqlite doesn't match the others
@@ -151,5 +151,5 @@ class Table
     end
     fields.sort
   end
-    
+
 end

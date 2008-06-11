@@ -1,7 +1,7 @@
 class DatabaseController < ApplicationController
-  
+
   require 'paginator'
-  
+
   include Switch
 
   #
@@ -10,6 +10,7 @@ class DatabaseController < ApplicationController
   def edit_row
     get_database( params[:id] )
     get_table( @database, params[:table] )
+    get_row( @table, params[:pk] )
   end
 
   #
@@ -30,7 +31,7 @@ class DatabaseController < ApplicationController
                   :id         => @database
     end
   end
-  
+
   #
   # Get some rows from the table
   #
@@ -53,7 +54,7 @@ class DatabaseController < ApplicationController
     end
     @page = @pager.page( params[:page] )
   end
-  
+
   #
   # List the tables in a database.
   #
@@ -66,7 +67,7 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :home, :action => :databases
     end
   end
-  
+
   #
   # Increments the session count for blank fields, then it's RJS
   # template loads the new table row partial into the table.
@@ -75,7 +76,7 @@ class DatabaseController < ApplicationController
     get_database( params[:id] )
     session[:field_blanks] += 1
   end
-  
+
   #
   # Lists the fields in a table
   #
@@ -139,7 +140,7 @@ class DatabaseController < ApplicationController
       @add_id_no_checked  = true
     end
   end
-  
+
   #
   # This does just what you think it does, hope you had backups..
   #
@@ -152,12 +153,12 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :database, :id => @database
     end
   end
-  
+
   def edit_table
     get_database( params[:id] )
     get_table( @database, params[:table] )
   end
-  
+
   def add_fields
     get_database( params[:id] )
     get_table( @database, params[:table] )
@@ -200,7 +201,7 @@ class DatabaseController < ApplicationController
     end
     session[:field_blanks] = ( session[:field_blanks] && session[:field_blanks] > 1 ) ? session[:field_blanks] : 5
   end
-  
+
   def edit_field
     get_database( params[:id] )
     get_table( @database, params[:table] )
@@ -228,7 +229,7 @@ class DatabaseController < ApplicationController
       end
     end
   end
-  
+
   def del_field
     get_database( params[:id] )
     get_table( @database, params[:table] )
@@ -243,8 +244,16 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :database, :id => @database, :action => :table, :table => @table.name
     end
   end
-  
+
   private
+
+  def get_row( table, id )
+    @row = Row.new( table, { :id => id } )
+    if @row.nil?
+      flash[:notice] = "row &quot;#{ pk }&quot; not found"
+      redirect_to :controller => :database, :id => table.database, :table => table.name
+    end
+  end
 
   def get_field( table, field )
     @field = table.get_field( field )
@@ -262,7 +271,7 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :home, :action => :databases
     end
   end
-  
+
   def get_database( id )
     @database = Database.find( :first, :conditions => [ 'id = ?', id ] )
     if @database.nil?
@@ -270,5 +279,5 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :home, :action => :databases
     end
   end
-    
+
 end

@@ -39,13 +39,19 @@ module Switch
   def switch( database )
     switch_db( database )
     begin
-      yield
-    rescue  ArgumentError
-      raise "Argument error: #{ $!.to_s }"
-    rescue ActiveRecord::StatementInvalid
-      raise "#{ $!.to_s }"
-    rescue  Mysql::Error, PGError, TypeError
-      raise "Database Error: #{ $!.to_s }"
+      begin
+        yield
+      rescue  ArgumentError
+        raise "Argument error: #{ $!.to_s }"
+      rescue ActiveRecord::StatementInvalid
+        raise "#{ $!.to_s }"
+      rescue Mysql::Error, NameError, PGError, TypeError
+        raise "Database Error: #{ $!.to_s }"
+      ensure
+        switch_back
+      end
+    rescue NameError
+
     ensure
       switch_back
     end
