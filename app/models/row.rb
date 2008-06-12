@@ -3,6 +3,8 @@ class Row < ActiveRecord::Base
   include Comparable
   include Switch
 
+  set_table_name 't2'
+
   attr_accessor :table
   #attr_accessor :id
   attr_accessor :keys
@@ -12,7 +14,7 @@ class Row < ActiveRecord::Base
   #
   def initialize( table, keys )
     switch_ar( table.database, table.name ) do |c|
-      self << c.find( :first )
+      c.find( :first )
     end
   end
 

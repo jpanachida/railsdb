@@ -249,9 +249,13 @@ class DatabaseController < ApplicationController
 
   def get_row( table, id )
     @row = Row.new( table, { :id => id } )
+    #debugger
     if @row.nil?
-      flash[:notice] = "row &quot;#{ pk }&quot; not found"
-      redirect_to :controller => :database, :id => table.database, :table => table.name
+      flash[:notice] = "row &quot;#{ id }&quot; not found"
+      redirect_to :controller => :database,
+                  :action     => :browse,
+                  :id         => table.database,
+                  :table      => table.name
     end
   end
 
@@ -263,11 +267,11 @@ class DatabaseController < ApplicationController
     end
   end
 
-  def get_table( database, table )
+  def get_table( database, name )
     # TODO make this database.get_table
-    @table = Table.new( database, table )
+    @table = Table.new( database, name )
     if @table.nil?
-      flash[:notice] = "table &quot;#{ table }&quot; not found"
+      flash[:notice] = "table &quot;#{ name }&quot; not found"
       redirect_to :controller => :home, :action => :databases
     end
   end
