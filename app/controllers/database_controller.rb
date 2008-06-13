@@ -10,6 +10,7 @@ class DatabaseController < ApplicationController
   def edit_row
     get_database( params[:id] )
     get_table( @database, params[:table] )
+    get_fields( @table )
     get_row( @table, params[:pk] )
   end
 
@@ -19,7 +20,7 @@ class DatabaseController < ApplicationController
   def insert
     get_database( params[:id] )
     get_table( @database, params[:table] )
-    @fields = @table.fields.collect{ |f| f.name }
+    get_fields( @table )
     if request.post?
       1.upto( params[params[:table].to_sym].size ) do |x|
         @table.create( params[params[:table].to_sym][x.to_s] )
@@ -38,7 +39,7 @@ class DatabaseController < ApplicationController
   def browse
     get_database( params[:id] )
     get_table( @database, params[:table] )
-    @fields = @table.fields.collect{ |f| f.name }
+    get_fields( @table )
     @link_span = LINK_SPAN
     @current_page = params[:page] ? params[:page].to_i : 1
     @active_count = @table.row_count
@@ -83,7 +84,8 @@ class DatabaseController < ApplicationController
   def table
     get_database( params[:id] )
     get_table( @database, params[:table] )
-    @fields = @table.fields
+#    @fields = @table.fields
+    get_fields( @table )
   end
 
   #
@@ -248,15 +250,19 @@ class DatabaseController < ApplicationController
   private
 
   def get_row( table, id )
-    @row = Row.new( table, { :id => id } )
-    #debugger
-    if @row.nil?
-      flash[:notice] = "row &quot;#{ id }&quot; not found"
-      redirect_to :controller => :database,
-                  :action     => :browse,
-                  :id         => table.database,
-                  :table      => table.name
-    end
+    @row = table.find( :first,
+                       :conditions => [ 'id = ?', id ] )
+#    if @row.nil?
+#      flash[:notice] = "row &quot;#{ id }&quot; not found"
+#      redirect_to :controller => :database,
+#                  :action     => :browse,
+#                  :id         => table.database,
+#                  :table      => table.name
+#    end
+  end
+
+  def get_fields( table )
+    @fields = table.fields.collect{ |f| f.name }
   end
 
   def get_field( table, field )
