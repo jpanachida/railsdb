@@ -1,7 +1,9 @@
 <tr<%= alt %>>
+  <td><%= h database.driver.name %></td>
   <td><%= link_to (h database.name), :controller => :database, :id => database %></td>
   <td><%= h database.description %></td>
-  <td><%= h database.driver.name %></td>
+  <td><%= h database.host %></td>
+  <td><%= h database.username %></td>
   <td class="c"><%= database.tables.size rescue 'Unknown' %></td>
   <td class="c"><%= link_to 'Edit', :controller => 'home', :action => 'edit_database', :id => database %></td>
   <td class="c"><%= link_to 'Del', :controller => 'home', :action => 'del_database', :id => database %></td>
