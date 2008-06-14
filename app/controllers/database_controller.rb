@@ -8,15 +8,19 @@ class DatabaseController < ApplicationController
   # Delete a table row
   #
   def del_row
-    get_database( params[:id] )
-    get_table( @database, params[:table] )
-    get_fields( @table )
-    @row = @table.find( :all,
-                        :conditions => [ 'id = ?',
+    if request.post?
+      get_database( params[:id] )
+      get_table( @database, params[:table] )
+      get_fields( @table )
+      @row = @table.find( :all,
+			  :conditions => [ 'id = ?',
                                          params[:pk] ] ).first
-    if request.post? && @row
-      @table.del_row( @row[ 'id' ] )
-      flash[:notice] = "row #{ @row[ 'id' ] } deleted"
+      if @row
+	@table.del_row( @row[ 'id' ] )
+	flash[:notice] = "row #{ @row[ 'id' ] } deleted"
+      else
+	flash[:notice] = "row #{ params[:pk] } not found"
+      end
       redirect_to :controller => :database,
                   :table      => @table.name,
                   :action     => :browse,
