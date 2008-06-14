@@ -16,10 +16,17 @@ class Table
   end
 
   #
+  # This method deletes a table row
+  #
+  def del_row( id )
+    switch_ar( self.database, self.name ) { |c| o = c.find( id ).destroy }
+  end
+
+  #
   # This method updates a table row
   #
-  def update_row( id, params )
-    #switch_ar( self.database, self.name ) { |c| o = c.find( *args ).collect{ |r| r.attributes } }
+  def update_row( id, attributes )
+    switch_ar( self.database, self.name ) { |c| o = c.find( id ).update_attributes( attributes ) }
   end
 
   #

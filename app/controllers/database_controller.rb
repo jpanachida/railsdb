@@ -5,6 +5,26 @@ class DatabaseController < ApplicationController
   include Switch
 
   #
+  # Delete a table row
+  #
+  def del_row
+    get_database( params[:id] )
+    get_table( @database, params[:table] )
+    get_fields( @table )
+    @row = @table.find( :all,
+                        :conditions => [ 'id = ?',
+                                         params[:pk] ] ).first
+    if request.post? && @row
+      @table.del_row( @row[ 'id' ] )
+      flash[:notice] = "row #{ @row[ 'id' ] } deleted"
+      redirect_to :controller => :database,
+                  :table      => @table.name,
+                  :action     => :browse,
+                  :id         => @database
+    end
+  end
+
+  #
   # Modify a table row
   #
   def edit_row
@@ -14,9 +34,9 @@ class DatabaseController < ApplicationController
     @row = @table.find( :all,
                         :conditions => [ 'id = ?',
                                          params[:pk] ] ).first
-    if request.post?
-      @table.update_row( @row, params )
-      flash[:notice] = "row updated"
+    if request.post? && @row
+      @table.update_row( @row[ 'id' ], params[:row] )
+      flash[:notice] = "row #{ @row[ 'id' ] } updated"
       redirect_to :controller => :database,
                   :table      => @table.name,
                   :action     => :browse,
