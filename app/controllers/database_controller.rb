@@ -11,7 +11,17 @@ class DatabaseController < ApplicationController
     get_database( params[:id] )
     get_table( @database, params[:table] )
     get_fields( @table )
-    get_row( @table, params[:pk] )
+    @row = @table.find( :all,
+                        :conditions => [ 'id = ?',
+                                         params[:pk] ] ).first
+    if request.post?
+      @table.update_row( @row, params )
+      flash[:notice] = "row updated"
+      redirect_to :controller => :database,
+                  :table      => @table.name,
+                  :action     => :browse,
+                  :id         => @database
+    end
   end
 
   #

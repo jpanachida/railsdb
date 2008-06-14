@@ -16,6 +16,13 @@ class Table
   end
 
   #
+  # This method updates a table row
+  #
+  def update_row( id, params )
+    #switch_ar( self.database, self.name ) { |c| o = c.find( *args ).collect{ |r| r.attributes } }
+  end
+
+  #
   # This method switches ActiveRecord's connection to the actual
   # database this database model represents, deletes the field,
   # then switches back to the RailsDB database.
