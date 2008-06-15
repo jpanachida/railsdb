@@ -1,0 +1,5 @@
+page.insert_html  :before,
+                  :blank_insert,
+                  :partial  => 'database/insert'
+
+page.visual_effect :highlight, "row-#{ session[:num_rows] }", :duration => 2

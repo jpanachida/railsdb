@@ -1,0 +1,7 @@
+<tr id="row-<%= session[:num_rows] %>"<%= alt %>>
+  <td><%= session[:num_rows] %></td>
+  <% @table.field_names.each do |n| -%>
+  <% next if n == 'id' %>
+  <td><%= text_field_tag "#{ @table.name }[#{ session[:num_rows] }][#{ n }]", '' %></td>
+  <% end -%>
+</tr>

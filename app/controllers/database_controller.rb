@@ -5,21 +5,19 @@ class DatabaseController < ApplicationController
   include Switch
 
   #
-  # Delete a table row
+  # Deletes a table row
   #
   def del_row
     if request.post?
       get_database( params[:id] )
       get_table( @database, params[:table] )
       get_fields( @table )
-      @row = @table.find( :all,
-			  :conditions => [ 'id = ?',
-                                         params[:pk] ] ).first
+      get_row( @table, params[:pk] )
       if @row
-	@table.del_row( @row[ 'id' ] )
-	flash[:notice] = "row #{ @row[ 'id' ] } deleted"
+        @table.del_row( @row[ 'id' ] )
+        flash[:notice] = "row #{ @row[ 'id' ] } deleted"
       else
-	flash[:notice] = "row #{ params[:pk] } not found"
+        flash[:notice] = "row #{ params[:pk] } not found"
       end
       redirect_to :controller => :database,
                   :table      => @table.name,
@@ -29,29 +27,28 @@ class DatabaseController < ApplicationController
   end
 
   #
-  # Modify a table row
+  # Used to modify a table row
   #
   def edit_row
     get_database( params[:id] )
     get_table( @database, params[:table] )
     get_fields( @table )
-    @row = @table.find( :all,
-                        :conditions => [ 'id = ?',
-                                         params[:pk] ] ).first
+    get_row( @table, params[:pk] )
     if request.post? && @row
       @table.update_row( @row[ 'id' ], params[:row] )
       flash[:notice] = "row #{ @row[ 'id' ] } updated"
       redirect_to :controller => :database,
-                  :table      => @table.name,
                   :action     => :browse,
+                  :table      => @table.name,
                   :id         => @database
     end
   end
 
   #
-  # Insert a row into a table
+  # Inserts rows of data into a table
   #
   def insert
+    session[:num_rows] = 1
     get_database( params[:id] )
     get_table( @database, params[:table] )
     get_fields( @table )
@@ -64,6 +61,35 @@ class DatabaseController < ApplicationController
                   :table      => @table.name,
                   :action     => :browse,
                   :id         => @database
+    end
+  end
+
+  #
+  # Increments the session count for blank insert fields, then it's RJS
+  # template loads the new insert partial into the table.
+  #
+  def blank_insert
+    if request.xhr?
+      get_database( params[:id] )
+      get_table( @database, params[:table] )
+      get_fields( @table )
+      session[:num_rows] += 1
+    end
+  end
+
+  #
+  # Decrements the session count for blank insert fields, then it's RJS
+  # template removes the last insert row.
+  #
+  def blank_remove
+    if request.xhr?
+      if session[:num_rows] > 1
+        get_database( params[:id] )
+        get_table( @database, params[:table] )
+        get_fields( @table )
+        @row_id = session[:num_rows]
+        session[:num_rows] -= 1
+      end
     end
   end
 
@@ -99,7 +125,8 @@ class DatabaseController < ApplicationController
       @tables = @database.tables
     rescue RuntimeError
       flash[:notice] = $!.to_s
-      redirect_to :controller => :home, :action => :databases
+      redirect_to :controller => :home,
+                  :action     => :databases
     end
   end
 
@@ -118,12 +145,11 @@ class DatabaseController < ApplicationController
   def table
     get_database( params[:id] )
     get_table( @database, params[:table] )
-#    @fields = @table.fields
     get_fields( @table )
   end
 
   #
-  # This parses through everything posted to create a table.
+  # This method is used to create new tables
   #
   def add_table
     get_database( params[:id] )
@@ -178,7 +204,7 @@ class DatabaseController < ApplicationController
   end
 
   #
-  # This does just what you think it does, hope you had backups..
+  # This method provides a way to delete an entire table
   #
   def del_table
     get_database( params[:id] )
@@ -186,7 +212,8 @@ class DatabaseController < ApplicationController
     if request.post?
       @database.del_table( @table.name )
       flash[:notice] = 'table deleted'
-      redirect_to :controller => :database, :id => @database
+      redirect_to :controller => :database,
+                  :id         => @database
     end
   end
 
@@ -195,6 +222,9 @@ class DatabaseController < ApplicationController
     get_table( @database, params[:table] )
   end
 
+  #
+  # This method provides a way to add any number of new fields to a database
+  #
   def add_fields
     get_database( params[:id] )
     get_table( @database, params[:table] )
@@ -231,13 +261,18 @@ class DatabaseController < ApplicationController
         else
           session[:field_blanks] = nil
           flash[:notice] = 'new fields added'
-          redirect_to :controller => :database, :id => @database, :action => :table
+          redirect_to :controller => :database,
+                      :action     => :table,
+                      :id         => @database
         end
       end
     end
     session[:field_blanks] = ( session[:field_blanks] && session[:field_blanks] > 1 ) ? session[:field_blanks] : 5
   end
 
+  #
+  # This method provides a way to edit a single table field
+  #
   def edit_field
     get_database( params[:id] )
     get_table( @database, params[:table] )
@@ -260,67 +295,89 @@ class DatabaseController < ApplicationController
           flash.now[:notice] = "An error occured:<br /><br />#{ $!.to_s }"
         else
           flash[:notice] = 'field updated'
-          redirect_to :controller => :database, :id => @database, :action => :table, :table => @table.name
+          redirect_to :controller => :database,
+                      :action     => :table,
+                      :id         => @database,
+                      :table      => @table.name
         end
       end
     end
   end
 
+  #
+  # This method deletes a field from a table.  It prevents the last
+  # field from being deleted.
+  #
   def del_field
     get_database( params[:id] )
     get_table( @database, params[:table] )
     if @table.field_count == 1
       flash[:notice] = 'last field cannot be deleted, delete table instead'
-      redirect_to :controller => :database, :id => @database
+      redirect_to :controller => :database,
+                  :id         => @database
     end
     get_field( @table, params[:field] )
     if request.post?
       @table.del_field( @field.name )
       flash[:notice] = 'field deleted'
-      redirect_to :controller => :database, :id => @database, :action => :table, :table => @table.name
+      redirect_to :controller => :database,
+                  :action     => :table,
+                  :id         => @database,
+                  :table      => @table.name
     end
   end
 
   private
 
+  #
+  # Finds a table row by table and id
+  #
   def get_row( table, id )
-    @row = table.find( :first,
-                       :conditions => [ 'id = ?', id ] )
-#    if @row.nil?
-#      flash[:notice] = "row &quot;#{ id }&quot; not found"
-#      redirect_to :controller => :database,
-#                  :action     => :browse,
-#                  :id         => table.database,
-#                  :table      => table.name
-#    end
+    @row = table.find( :all,
+                       :conditions => [ 'id = ?', id ] ).first
   end
 
+  #
+  # Gets all fields from a given table
+  #
   def get_fields( table )
     @fields = table.fields.collect{ |f| f.name }
   end
 
+  #
+  # Finds a field by table and name
+  #
   def get_field( table, field )
     @field = table.get_field( field )
     if @field.nil?
       flash[:notice] = "field &quot;#{ field }&quot; not found"
-      redirect_to :controller => :database, :id => table.database, :table => table.name
+      redirect_to :controller => :database,
+                  :id         => table.database,
+                  :table      => table.name
     end
   end
 
+  #
+  # Finds a table by database and name
+  #
   def get_table( database, name )
-    # TODO make this database.get_table
     @table = Table.new( database, name )
     if @table.nil?
       flash[:notice] = "table &quot;#{ name }&quot; not found"
-      redirect_to :controller => :home, :action => :databases
+      redirect_to :controller => :home,
+                  :action     => :databases
     end
   end
 
+  #
+  # Finds a database by id
+  #
   def get_database( id )
     @database = Database.find( :first, :conditions => [ 'id = ?', id ] )
     if @database.nil?
       flash[:notice] = "database &quot;#{ database }&quot; not found"
-      redirect_to :controller => :home, :action => :databases
+      redirect_to :controller => :home,
+                  :action     => :databases
     end
   end
 
