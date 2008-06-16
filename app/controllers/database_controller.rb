@@ -145,7 +145,7 @@ class DatabaseController < ApplicationController
   def table
     get_database( params[:id] )
     get_table( @database, params[:table] )
-    get_fields( @table )
+    @fields = @table.fields
   end
 
   #
