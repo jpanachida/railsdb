@@ -1,8 +1,11 @@
 <h2><%= link_to 'Databases', :controller => :home, :action => :databases %> &#187; <%= link_to (h @database.name), :controller => :database, :id => @database %> &#187; <%= h @table.name %></h2>
 
+<% form_tag ( {:controller => "database", :action => "export", :id => @database, :table => (h @table.name)}) do -%>
+
 <table class="data">
 <thead>  
 <tr>
+  <td></td>
   <td>Position</td>
   <td>Name</td>
   <td>Type</td>
@@ -28,3 +31,9 @@
 <% end -%>
 </tbody>
 </table>
+
+<h2>
+<%= select_tag "format", options_for_select(["CVS", "TSV"], "CVS") %>
+<%= submit_tag 'Export data' %>
+<h2>
+<% end -%>

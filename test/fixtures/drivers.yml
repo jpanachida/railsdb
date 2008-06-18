@@ -1,7 +1,11 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+sqlite:
+    id: 1
+    name: 'sqlite3'
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+oracle:
+    id: 2
+    name: 'oracle'
+
+postgresql:
+    id: 3
+    name: 'postgresql'

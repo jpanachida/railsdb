@@ -1,7 +1,9 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+red:
+    id: 1
+    driver_id: 1
+    name: 'redtestdb'
+    path: <%=RAILS_ROOT%>/db/test.sqlite3
+    description: 'Red database'
+    host: 'localhost'
+    username: 'railsdb'
+    password: 'changeme'

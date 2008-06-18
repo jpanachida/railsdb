@@ -72,6 +72,12 @@ ActionController::Routing::Routes.draw do |map|
               :requirements => {  :id     => /[0-9]{1,11}/,
                                   :table  => /[\.0-9a-z\-_]{1,64}/,
                                   :field  => /[\.0-9a-z\-_]{1,64}/ }
+                                
+  map.connect 'database/export/:id',
+              :controller   => 'database',
+              :action       => 'export_table',
+              :requirements => { :id    => /[0-9]{1,11}/,
+                                 :table => /[\.0-9a-z\-_]{1,64}/ }
 
   map.connect 'database/:id/add',
               :controller   => 'database',

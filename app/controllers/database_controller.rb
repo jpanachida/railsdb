@@ -1,6 +1,7 @@
 class DatabaseController < ApplicationController
 
   require 'paginator'
+  require 'export/dsv_exporter'
 
   include Switch
 
@@ -114,8 +115,7 @@ class DatabaseController < ApplicationController
   def table
     get_database( params[:id] )
     get_table( @database, params[:table] )
-#    @fields = @table.fields
-    get_fields( @table )
+    @fields = @table.fields
   end
 
   #
@@ -277,8 +277,31 @@ class DatabaseController < ApplicationController
     end
   end
 
+  def export_table
+    get_database( params[:id] )
+    get_table( @database, params[:table] )
+    checked_field_names = (params[:field].delete_if { |k,v| v == '0' }).keys
+    rows = @table.find(:all, :select => "#{checked_field_names.join(',')}")
+    export_data = []
+    rows.each { |r| export_data << r.values  }  
+    format = params[:format]
+    delimiter = ','
+    type = 'text/csv'
+    case format
+      when 'CVS'
+        delimiter = ','
+        type = 'text/csv'
+      when 'TSV'
+        delimiter = "\t"
+        type = 'text/tab-separated-values'
+    end
+    exporter = DsvExporter.new(delimiter)
+    exporter.header = params[:field].keys
+    send_data exporter.export_as_text(export_data), :filename => "#{@database.name}$#{params[:table]}.csv", :type => type
+  end
+  
   private
-
+     
   def get_row( table, id )
     @row = table.find( :first,
                        :conditions => [ 'id = ?', id ] )
@@ -319,5 +342,5 @@ class DatabaseController < ApplicationController
       redirect_to :controller => :home, :action => :databases
     end
   end
-
+  
 end
