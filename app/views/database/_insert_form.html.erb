@@ -17,15 +17,21 @@
 </tr>
 </thead>
 <tbody>
-<% 5.times do |x| -%>
-<tr<%= alt %>>
-  <td><%= x.succ %></td>
-  <% @table.field_names.each do |n| -%>
-  <% next if n == 'id' %>
-  <td><%= text_field_tag "#{ @table.name }[#{ x.succ }][#{ n }]", '' %></td>
-  <% end -%>
+<%= render :partial => 'database/insert' %>
+<tr id="blank_insert"<%= alt %>>
+  <td class="c" colspan="<%= @table.field_names.size.succ %>">
+    <%= link_to_remote 'Add Field',
+                       :url => { :controller => :database,
+                                 :action     => :blank_insert,
+                                 :id         => @database,
+                                 :table      => @table.name } %> |
+    <%= link_to_remote 'Remove Field',
+                       :url => { :controller => :database,
+                                 :action     => :blank_remove,
+                                 :id         => @database,
+                                 :table      => @table.name } %>
+  </td>
 </tr>
-<% end -%>
 </tbody>
 <tfoot>
 <tr>

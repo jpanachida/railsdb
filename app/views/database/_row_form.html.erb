@@ -1,0 +1,10 @@
+<% @fields.each do |field| -%>
+<tr<%= alt %>>
+  <td><%= field %>:</td>
+  <td><% if field == 'id' -%>
+    <%= @row[field] %>
+  <% else -%>
+    <%= text_field_tag "row[#{ field.to_sym }]", @row[field] %>
+  <% end -%></td>
+</tr>
+<% end -%>

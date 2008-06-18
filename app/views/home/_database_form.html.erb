@@ -1,7 +1,7 @@
 <% form_for :database do |f| -%>
 
 <table class="form">
-<thead>  
+<thead>
 <tr>
   <td colspan="2">Database Form</td>
 </tr>
@@ -15,7 +15,7 @@
     <% end -%></td>
 </tr>
 <tr<%= alt %>>
-  <td class="r">Name:</td>
+  <td class="r">Database/Name:</td>
   <td><%= f.text_field :name, :size => 32 %>
     <% if @database.errors['name'] -%>
       <span class="error"><%= @database.errors['name'] %></span>
