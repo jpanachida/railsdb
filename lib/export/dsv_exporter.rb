@@ -1,6 +1,7 @@
+require 'csv'
+
 # Delimiter-separated values exporter.
 class DsvExporter
-  CRLF = "\r\n"
   attr_accessor :header
   attr_reader :delimiter
   
@@ -9,16 +10,16 @@ class DsvExporter
   end
   
   def export(rows)
-    result = []
-    result << @header.collect { |e| %{"#{e.to_s.sub('"', '""')}"} }.join(@delimiter) if @header
-    rows.each do |row|
-      result << row.collect { |e| %{"#{e.to_s.sub('"', '""')}"} }.join(@delimiter)
-    end
-    result
+    export_as_text(rows).split($/)
   end
   
   def export_as_text(rows)
-    export(rows).join(CRLF)
+    result = ''
+    result << CSV.generate_line(@header, @delimiter) << $/ if @header
+    rows.each do |row|
+      result << CSV.generate_line(row, @delimiter) << $/
+    end
+    result
   end
   
 end
