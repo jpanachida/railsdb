@@ -9,7 +9,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 8) do
+ActiveRecord::Schema.define(:version => 9) do
+
+  create_table "app_values", :force => true do |t|
+    t.integer  "dict_id",                    :null => false
+    t.string   "name",        :limit => 128, :null => false
+    t.string   "desc"
+    t.string   "code",        :limit => 8
+    t.integer  "value_order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "databases", :force => true do |t|
     t.integer  "driver_id"

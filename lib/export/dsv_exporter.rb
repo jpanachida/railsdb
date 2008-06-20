@@ -17,7 +17,7 @@ class DsvExporter
     result = ''
     result << CSV.generate_line(@header, @delimiter) << $/ if @header
     rows.each do |row|
-      result << CSV.generate_line(row, @delimiter) << $/
+      result << CSV.generate_line(row.map {|e| e ? e : '' }, @delimiter) << $/
     end
     result
   end

@@ -68,6 +68,12 @@ class DsvExporterTest < Test::Unit::TestCase
   def test_empty_value
     empty_value = ''
     export = @exporter.export_as_text([[empty_value]])
-    assert_equal(2, export.count('"'), "Should have 2 quotation marks.") 
+    assert_equal(2, export.count('"'), "Should have 2 quotation marks.")
+  end
+  
+  def test_nil_value
+    nil_value = nil
+    export = @exporter.export_as_text([[nil_value]])
+    assert_equal(2, export.count('"'), "Should have 2 quotation marks.")    
   end
 end

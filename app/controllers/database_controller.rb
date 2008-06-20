@@ -147,6 +147,7 @@ class DatabaseController < ApplicationController
     get_database( params[:id] )
     get_table( @database, params[:table] )
     @fields = @table.fields
+    @export_formats = AppValue.export_formats
   end
 
   #

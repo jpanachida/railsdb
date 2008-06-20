@@ -33,7 +33,7 @@
 </table>
 
 <h2>
-<%= select_tag "format", options_for_select(["CVS", "TSV"], "CVS") %>
+<%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
 <%= submit_tag 'Export data' %>
 <h2>
 <% end -%>
