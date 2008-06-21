@@ -56,7 +56,7 @@ class CreateAppValues < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :values
+    drop_table :app_values
   end
   
 end

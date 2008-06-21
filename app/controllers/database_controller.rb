@@ -333,22 +333,39 @@ class DatabaseController < ApplicationController
     get_database( params[:id] )
     get_table( @database, params[:table] )
     checked_field_names = (params[:field].delete_if { |k,v| v == '0' }).keys
+    if checked_field_names == []
+      flash[:notice] = "Select fields to export"
+      redirect_to :controller => :database,
+                  :action     => :table,
+                  :id         => @database,
+                  :table      => @table.name
+      return
+    end
     rows = @table.find(:all, :select => "#{checked_field_names.join(',')}")
+    if rows == []
+      flash[:notice] = "Table is empty"
+      redirect_to :controller => :database,
+                  :action     => :table,
+                  :id         => @database,
+                  :table      => @table.name
+      return
+    end    
     export_data = []
     rows.each { |r| export_data << r.values  }  
-    format = params[:format]
+    format = params[:app_value][:id]
     delimiter = ','
     type = 'text/csv'
     case format
-      when 'CVS'
+      when RailsdbConfig::ExportFormat.csv.to_s
         delimiter = ','
         type = 'text/csv'
-      when 'TSV'
+      when RailsdbConfig::ExportFormat.tsv.to_s
         delimiter = "\t"
         type = 'text/tab-separated-values'
     end
+    # TODO Move export to table model
     exporter = DsvExporter.new(delimiter)
-    exporter.header = params[:field].keys
+    exporter.header = rows[0].keys
     send_data exporter.export_as_text(export_data), :filename => "#{@database.name}$#{params[:table]}.csv", :type => type
   end
   
