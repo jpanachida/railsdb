@@ -6,13 +6,25 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <%= javascript_include_tag :defaults %>
   <%= stylesheet_link_tag 'railsdb' %>
-  <base target="main" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
+<div id="header">
+<%= render :partial => 'home/header' %>
+</div>
+<div id="main">
+<div id="menu">
+<%= render :partial => 'home/menu' %>
+</div>
+<div id="content">
 <% if flash[:notice] -%>
 <p class="error"><%= flash[:notice] %></p>
 <% end -%>
 <%= yield :layout %>
+</div>
+</div>
+<div id="footer">
+<%= render :partial => 'home/footer' %>
+</div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 class DatabaseController < ApplicationController
 
+  before_filter :check_perm
+
   require 'paginator'
   require 'export/dsv_exporter'
 
@@ -334,7 +336,7 @@ class DatabaseController < ApplicationController
     checked_field_names = (params[:field].delete_if { |k,v| v == '0' }).keys
     rows = @table.find(:all, :select => "#{checked_field_names.join(',')}")
     export_data = []
-    rows.each { |r| export_data << r.values  }  
+    rows.each { |r| export_data << r.values  }
     format = params[:format]
     delimiter = ','
     type = 'text/csv'
@@ -350,8 +352,18 @@ class DatabaseController < ApplicationController
     exporter.header = params[:field].keys
     send_data exporter.export_as_text(export_data), :filename => "#{@database.name}$#{params[:table]}.csv", :type => type
   end
-  
+
   private
+
+  #
+  # Check site login
+  #
+  def check_perm
+    unless check_site_perm 'admin'
+      flash[:notice] = 'please login'
+      redirect_to :controller => :login
+    end
+  end
 
   #
   # Finds a table row by table and id
@@ -404,5 +416,5 @@ class DatabaseController < ApplicationController
                   :action     => :databases
     end
   end
-  
+
 end

@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
       @current_user = nil
       return
     end
-    @current_user = User.find( :first, :conditions => [ 'id = ?', session[:user_id] ] )
+    @current_user = User.find( :first,
+                               :conditions => [ 'id = ?',
+                                                session[:user_id] ] )
   end
 
   #

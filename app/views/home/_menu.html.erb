@@ -1,15 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-  <title></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <%= javascript_include_tag :defaults %>
-  <%= stylesheet_link_tag 'railsdb' %>
-  <base target="main" />
-</head>
-<body scroll="no" bgcolor="#808080">
-<table id="menu">
+<table>
 <tr>
   <td><%= link_to "Databases (#{ Database.count })", :controller => 'home', :action => 'databases' %></td>
 </tr>
@@ -26,8 +15,6 @@
   <td><%= link_to "Permissions (#{ Permission.count })", :controller => 'home', :action => 'permissions' %></td>
 </tr>
 <tr>
-  <td><%= link_to 'Logout', { :controller => 'home' , :action => 'logout' }, :target => '_top' %></td>
+  <td><%= link_to 'Logout', :controller => :logout %></td>
 </tr>
 </table>
-</body>
-</html>
