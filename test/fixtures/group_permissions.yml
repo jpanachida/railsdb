@@ -1,7 +1,8 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+admin_admin:
+  id: 1
+  group_id: 1
+  permission_id: 1
+user_user:
+  id: 2
+  group_id: 2
+  permission_id: 2

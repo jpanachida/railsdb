@@ -1,9 +1,9 @@
 red:
-    id: 1
-    driver_id: 1
-    name: 'redtestdb'
-    path: <%=RAILS_ROOT%>/db/test.sqlite3
-    description: 'Red database'
-    host: 'localhost'
-    username: 'railsdb'
-    password: 'changeme'
+  id: 1
+  driver_id: 1
+  name: 'redtestdb'
+  path: <%=RAILS_ROOT%>/db/test.sqlite3
+  description: 'Red database'
+  host: 'localhost'
+  username: 'railsdb'
+  password: 'changeme'

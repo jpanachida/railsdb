@@ -1,11 +1,9 @@
 sqlite:
-    id: 1
-    name: 'sqlite3'
-
+  id: 1
+  name: 'sqlite3'
 oracle:
-    id: 2
-    name: 'oracle'
-
+  id: 2
+  name: 'oracle'
 postgresql:
-    id: 3
-    name: 'postgresql'
+  id: 3
+  name: 'postgresql'
