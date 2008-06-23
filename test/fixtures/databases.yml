@@ -1,9 +1,36 @@
-red:
+sqlite3:
   id: 1
   driver_id: 1
-  name: 'redtestdb'
-  path: <%=RAILS_ROOT%>/db/test.sqlite3
-  description: 'Red database'
-  host: 'localhost'
-  username: 'railsdb'
-  password: 'changeme'
+  name: railsdb_sqlite3_test
+  path: <%=RAILS_ROOT%>/db/development.sqlite3
+  description: RailsDB SQLite3 test database
+  host:
+  username:
+  password:
+mysql:
+  id: 2
+  driver_id: 2
+  name: railsdb_mysql_test
+  path:
+  description: RailsDB MySQL test database
+  host: localhost
+  username: railsdb_test
+  password: changeme
+pgsql:
+  id: 3
+  driver_id: 3
+  name: railsdb_pgsql_test
+  path:
+  description: RailsDB PostgreSQL test database
+  host: localhost
+  username: railsdb_test
+  password: changeme
+oracle:
+  id: 4
+  driver_id: 4
+  name: railsdb_oracle_test
+  path:
+  description: RailsDB Oracle test database
+  host: localhost
+  username: railsdb_oracle_test
+  password: changeme
