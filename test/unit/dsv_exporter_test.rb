@@ -3,7 +3,7 @@
 # and open the template in the editor.
  
 
-$:.unshift File.join(File.dirname(__FILE__),'..','lib')
+$:.unshift File.join(File.dirname(__FILE__),'../..','lib')
 
 require 'test/unit'
 require 'export/dsv_exporter'

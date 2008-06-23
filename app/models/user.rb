@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
                             :message => 'last name required'
 
   validates_presence_of     :username,
-                            :message => 'last name required'
+                            :message => 'username required'
 
   validates_format_of       :email,
                             :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,

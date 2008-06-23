@@ -1,3 +1,8 @@
+body
+{
+  background-color:     #fff;
+}
+
 body, form
 {
   margin:               0;
@@ -20,8 +25,8 @@ h1
 
 h2
 {
-  padding:              0 0 0 10px;
-  margin:               8px 0 0 0;
+  padding:              8px 0 0 10px;
+  margin:               0 0 0 0;
 }
 
 a
@@ -74,8 +79,8 @@ a:hover
 
 p.error
 {
-    margin:              10px 0 0 0;
-    padding:             0 0 0 10px;
+    margin:              0 0 0 0;
+    padding:             10px 0 0 10px;
 }
 
 table.data, table.form
@@ -134,36 +139,37 @@ table.data thead a:hover
   background-color:     inherit;
 }
 
-#top
+#header
 {
+  background-color:     #ccc;
+}
+
+#header table
+{
+  margin:               0 0 0 0;
   width:                100%;
   border-collapse:      collapse;
-  overflow:             hidden;
+  border-bottom:        1px solid #000;
 }
 
-#top td
-{
-  padding:              0;
-}
-
-#top .l, #top .a
+#header .l, #header .a
 {
   text-align:           right;
   padding:              5px 5px 1px 0;
 }
 
-#top .a
+#header .a
 {
   font-size:            17px;
 }
 
-#top .l
+#header .l
 {
   vertical-align:       bottom;
-  padding:              12px 5px 0 0;
+  padding:              12px 5px 3px 0;
 }
 
-#top .t
+#header .t
 {
   font-size:            25px;
   font-weight:          bold;
@@ -171,43 +177,56 @@ table.data thead a:hover
   padding:              0 0 5px 8px;
 }
 
-#bottom
+#main
 {
+  min-height:           480px;
+  background:           url(/images/main_bg.gif) repeat-y;
+}
+
+#footer table
+{
+  border-top:           1px solid #000;
   width:                100%;
 }
 
-#bottom td
+#footer table td
 {
   font-size:            11px;
   text-align:           right;
-  padding:              2px 2px 0 0;
+  padding:              2px 4px 0 0;
   vertical-align:       top;
   height:               11px;
 }
 
 #menu
 {
-  width:                100%;
+  float:                left;
   border-collapse:      collapse;
-  margin:               6px 0 0 0;
+  margin:               0 0 0 0;
 }
 
-#menu td
+#menu table
 {
+  margin:               4px 10px 0 0;
+}
+
+#menu table td
+{
+  width:                132px;
   text-align:           right;
-  padding:              5px 10px 0 0;
+  padding:              0 6px 2px 0;
 }
 
 #menu a
 {
   font-size:            15px;
-  color:                #ccc;
+  color:                #333;
   background-color:     inherit;
 }
 
 #menu a:hover
 {
-  color:                #fff;
+  color:                #000;
   background-color:     inherit;
 }
 

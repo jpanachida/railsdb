@@ -1,5 +1,5 @@
 class CreateDatabases < ActiveRecord::Migration
-  
+
   def self.up
     create_table :databases do |t|
       t.integer :driver_id
@@ -11,18 +11,17 @@ class CreateDatabases < ActiveRecord::Migration
       t.string  :password,    :limit => 40,   :default => nil
       t.timestamps
     end
-    @mysql      = Driver.find_by_name( 'mysql' )
-    @oracle     = Driver.find_by_name( 'oracle' )
+    @sqlite3    = Driver.find_by_name( 'sqlite3'    )
+    @mysql      = Driver.find_by_name( 'mysql'      )
     @postgresql = Driver.find_by_name( 'postgresql' )
-    @sqlite3    = Driver.find_by_name( 'sqlite3' )
+    @oracle     = Driver.find_by_name( 'oracle'     )
+    Database.create(  :name         => "#{ RAILS_ENV }.sqlite3",
+                      :path         => "#{ RAILS_ROOT }/db/#{ RAILS_ENV }.sqlite3",
+                      :description  => 'This is the main application database.',
+                      :driver       => @sqlite3 )
     Database.create(  :name         => 'mysql',
                       :description  => 'This is an example MySQL database.',
                       :driver       => @mysql,
-                      :host         => 'localhost',
-                      :username     => 'root' )
-    Database.create(  :name         => 'oracle',
-                      :description  => 'This is an example Oracle/XE database.',
-                      :driver       => @oracle,
                       :host         => 'localhost',
                       :username     => 'root' )
     Database.create(  :name         => 'postgresql',
@@ -30,14 +29,15 @@ class CreateDatabases < ActiveRecord::Migration
                       :driver       => @postgresql,
                       :host         => 'localhost',
                       :username     => 'root' )
-    Database.create(  :name         => "#{ RAILS_ENV }.sqlite3",
-                      :path         => "#{ RAILS_ROOT }/db/#{ RAILS_ENV }.sqlite3",
-                      :description  => 'This is the main application database.',
-                      :driver       => @sqlite3 )
+    Database.create(  :name         => 'oracle',
+                      :description  => 'This is an example Oracle/XE database.',
+                      :driver       => @oracle,
+                      :host         => 'localhost',
+                      :username     => 'root' )
   end
 
   def self.down
     drop_table :databases
   end
-  
+
 end

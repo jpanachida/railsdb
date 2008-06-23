@@ -1,21 +1,9 @@
 class HomeController < ApplicationController
-  
-  before_filter :check_perm, :except => [ :login, :logout ]
 
-  filter_parameter_logging :password
-  
-  layout :get_layout
+  before_filter :check_perm
 
   def index
-  end
-
-  def top
-  end
-
-  def menu
-  end
-
-  def bottom
+    redirect_to :controller => :home, :action => :databases
   end
 
   def databases
@@ -289,33 +277,12 @@ class HomeController < ApplicationController
     end
   end
 
-  def login
-    session[:user_id] = nil
-    if request.post?
-      user = User.authenticate( params[:login][:username], params[:login][:password] )
-      if user
-        session[:user_id] = user.id
-        uri = session[:uri]
-        session[:uri] = nil
-        flash[:notice] = 'login successful'
-        redirect_to uri || { :controller => 'home' }
-      else
-        flash[:notice] = 'login failed'
-      end
-    end
-  end
-
-  def logout
-    reset_session
-    redirect_to :controller => :home, :action => :login
-  end
-
   private
 
   def check_perm
     unless check_site_perm 'admin'
       flash[:notice] = 'please login'
-      redirect_to :controller => 'home', :action => 'login'
+      redirect_to :controller => :login
     end
   end
 
@@ -342,7 +309,7 @@ class HomeController < ApplicationController
       redirect_to :controller => 'home', :action => 'permissions'
     end
   end
-  
+
   def get_driver( id )
     @driver = Driver.find( :first, :conditions => [ 'id = ?', id ] )
     if @driver.nil?
@@ -350,7 +317,7 @@ class HomeController < ApplicationController
       redirect_to :controller => 'home', :action => 'drivers'
     end
   end
-  
+
   def get_database( id )
     @database = Database.find( :first, :conditions => [ 'id = ?', id ] )
     if @database.nil?
@@ -359,8 +326,4 @@ class HomeController < ApplicationController
     end
   end
 
-  def get_layout
-    ( %w( index top menu bottom login ).include? self.action_name ) ? nil : 'application'
-  end
-  
 end

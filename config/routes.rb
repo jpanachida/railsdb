@@ -84,7 +84,7 @@ ActionController::Routing::Routes.draw do |map|
               :requirements => {  :id     => /[0-9]{1,11}/,
                                   :table  => /[\.0-9a-z\-_]{1,64}/,
                                   :field  => /[\.0-9a-z\-_]{1,64}/ }
-                                
+
   map.connect 'database/export/:id',
               :controller   => 'database',
               :action       => 'export_table',
@@ -142,8 +142,16 @@ ActionController::Routing::Routes.draw do |map|
               :action       => 'index',
               :requirements => { :id  => /[0-9]{1,11}/ }
 
+  map.connect 'logout',
+              :controller   => 'login',
+              :action       => 'logout'
+
+  map.connect 'login',
+              :controller   => 'login',
+              :action       => 'login'
+
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => 'home'
+  map.root :controller => 'home', :action => 'databases'
 
   # See how all your routes lay out with "rake routes"
 

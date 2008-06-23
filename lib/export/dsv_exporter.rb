@@ -19,7 +19,7 @@ class DsvExporter
     rows.each do |row|
       result << CSV.generate_line(row.map {|e| e ? e : '' }, @delimiter) << $/
     end
-    result
+    result.chomp
   end
   
 end

@@ -1,46 +1,56 @@
 class Database < ActiveRecord::Base
-  
+
   include Switch
-  
+
   belongs_to :driver
-  
+
   validates_presence_of :driver_id,
                         :message    => 'driver type required'
-  
+
   validates_presence_of :name,
                         :message    => 'name required'
-  
+
   validates_length_of   :name,
                         :maximum    => 64,
                         :message    => 'must be less than %d characters in length'
-                        
-  validates_presence_of :path,
-                        :allow_nil  => true,
-                        :if         => Proc.new { |database| database.driver && database.driver.name == 'sqlite3' },
-                        :message    => 'file path required for sqlite3'
-  
-  validates_length_of   :path,
-                        :maximum    => 255,
-                        :allow_nil  => true,
-                        :message    => 'must be less than %d characters in length'
-  
+
+  validates_presence_of :description,
+                        :message    => 'description required'
+
   validates_length_of   :description,
                         :maximum    => 255,
                         :message    => 'must be less than %d characters in length'
 
-  validates_length_of   :host,
+  validates_presence_of :path,
+                        :if         => Proc.new { |database| database.driver && database.driver.name == 'sqlite3' },
+                        :message    => 'file path required for sqlite3'
+
+  validates_length_of   :path,
+                        :if         => Proc.new { |database| database.driver && database.driver.name == 'sqlite3' },
                         :maximum    => 255,
-                        :allow_nil  => true,
                         :message    => 'must be less than %d characters in length'
 
+  validates_presence_of :host,
+                        :if         => Proc.new { |database| database.driver && database.driver.name != 'sqlite3' },
+                        :message    => 'host required'
+
+  validates_length_of   :host,
+                        :if         => Proc.new { |database| database.driver && database.driver.name != 'sqlite3' },
+                        :maximum    => 255,
+                        :message    => 'must be less than %d characters in length'
+
+  validates_presence_of :username,
+                        :if         => Proc.new { |database| database.driver && database.driver.name != 'sqlite3' },
+                        :message    => 'username required'
+
   validates_length_of   :username,
+                        :if         => Proc.new { |database| database.driver && database.driver.name != 'sqlite3' },
                         :maximum    => 32,
-                        :allow_nil  => true,
                         :message    => 'must be less than %d characters in length'
 
   validates_length_of   :password,
-                        :maximum    => 40,
                         :allow_nil  => true,
+                        :maximum    => 40,
                         :message    => 'must be less than %d characters in length'
 
   #
@@ -66,7 +76,7 @@ class Database < ActiveRecord::Base
       options[:id] = false if params[:add_id] == '0'
       col_options = mangle_column_options( params, '1' )
       ActiveRecord::Base.connection.create_table( params[:name].to_sym, options ) do |t|
-        t.column params[:fields]['1'][:name].to_sym, params[:fields]['1'][:type].to_sym, col_options 
+        t.column params[:fields]['1'][:name].to_sym, params[:fields]['1'][:type].to_sym, col_options
       end
       table = self.get_table( params[:name] )
       table.add_fields( params ) if table
@@ -101,7 +111,7 @@ class Database < ActiveRecord::Base
   def table_names
     self.tables.collect { |t| t.name }
   end
-  
+
   #
   # Does this database contain a table with passed name?
   #

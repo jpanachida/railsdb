@@ -1,5 +1,7 @@
 class DatabaseController < ApplicationController
 
+  before_filter :check_perm
+
   require 'paginator'
   require 'export/dsv_exporter'
 
@@ -121,6 +123,11 @@ class DatabaseController < ApplicationController
   # List the tables in a database.
   #
   def index
+    unless params[:id]
+      flash[:notice] = 'database id not found'
+      redirect_to :controller => :home,
+                  :action     => :databases
+    end
     get_database( params[:id] )
     begin
       @tables = @database.tables
@@ -332,16 +339,23 @@ class DatabaseController < ApplicationController
   def export_table
     get_database( params[:id] )
     get_table( @database, params[:table] )
-    checked_field_names = (params[:field].delete_if { |k,v| v == '0' }).keys
-    if checked_field_names == []
+    keys = params[:fields].delete_if{ |k,v| v.values[0] == '0' }.keys.sort
+    if keys == []
       flash[:notice] = "Select fields to export"
       redirect_to :controller => :database,
                   :action     => :table,
                   :id         => @database,
                   :table      => @table.name
       return
-    end
-    rows = @table.find(:all, :select => "#{checked_field_names.join(',')}")
+    end  
+    fields = []
+    keys.each{ |k| fields << params[:fields][ k ].keys[ 0 ] \
+      if params[:fields][ k ].values[ 0 ] == '1'
+    }
+    select = fields.join( ',' )
+    rows = @table.find( :all,
+                        :select => select,
+                        :order  => 'id' )
     if rows == []
       flash[:notice] = "Table is empty"
       redirect_to :controller => :database,
@@ -349,27 +363,38 @@ class DatabaseController < ApplicationController
                   :id         => @database,
                   :table      => @table.name
       return
-    end    
-    export_data = []
-    rows.each { |r| export_data << r.values  }  
-    format = params[:app_value][:id]
-    delimiter = ','
-    type = 'text/csv'
-    case format
+    end                        
+    data = []
+    rows.each { |r| data << fields.collect{ |f| r[ f ].to_s } }
+    case params[:app_value][:id]
       when RailsdbConfig::ExportFormat.csv.to_s
+        ext = 'csv'
         delimiter = ','
         type = 'text/csv'
       when RailsdbConfig::ExportFormat.tsv.to_s
+        ext = 'txt'
         delimiter = "\t"
         type = 'text/tab-separated-values'
     end
     # TODO Move export to table model
-    exporter = DsvExporter.new(delimiter)
-    exporter.header = rows[0].keys
-    send_data exporter.export_as_text(export_data), :filename => "#{@database.name}$#{params[:table]}.csv", :type => type
+    exporter = DsvExporter.new( delimiter )
+    exporter.header = fields
+    send_data exporter.export_as_text( data ),
+              :filename => "#{ @database.name }_#{ params[:table] }_#{ Time.now.to_i }.#{ ext }",
+              :type     => type
   end
-  
+
   private
+
+  #
+  # Check site login
+  #
+  def check_perm
+    unless check_site_perm 'admin'
+      flash[:notice] = 'please login'
+      redirect_to :controller => :login
+    end
+  end
 
   #
   # Finds a table row by table and id
@@ -422,5 +447,5 @@ class DatabaseController < ApplicationController
                   :action     => :databases
     end
   end
-  
+
 end

@@ -1,11 +1,12 @@
-sqlite:
-    id: 1
-    name: 'sqlite3'
-
-oracle:
-    id: 2
-    name: 'oracle'
-
+sqlite3:
+  id: 1
+  name: sqlite3
+mysql:
+  id: 2
+  name: mysql
 postgresql:
-    id: 3
-    name: 'postgresql'
+  id: 3
+  name: postgresql
+oracle:
+  id: 4
+  name: oracle

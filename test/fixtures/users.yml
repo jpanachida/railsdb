@@ -6,7 +6,6 @@ railsdb:
   email: user@example.com
   passwd_hash: ce352d8077c562e07bd896b5a3f4d027bc1d834f
   passwd_salt: dbffdca3a141dc3a33eec72104d5a54b0cbd42d8
-
 other:
   id: 2
   fname: Other

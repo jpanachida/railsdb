@@ -36,11 +36,15 @@ Report Bugs:
 
 http://railsdb.lighthouseapp.com/projects/12472-railsdb/overview
 
-Contact
+Contact:
 
 Greg Donald
 gdonald@gmail.com
 http://destiney.com/
+
+Contributors:
+Jacek Panachida
+jacek.panachida@gmail.com
 
 Ruby on Rails:
 

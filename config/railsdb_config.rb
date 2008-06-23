@@ -9,7 +9,7 @@ module RailsdbConfig
 
     module ExportFormat
       mattr_reader :csv, :tsv, :xml, :yaml, :sql
-      @@cvs = 1
+      @@csv = 1
       @@tsv = 2
       @@xml = 3
       @@yaml = 4

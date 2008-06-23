@@ -1,9 +1,16 @@
-<h2><%= link_to 'Databases', :controller => :home, :action => :databases %> &#187; <%= link_to (h @database.name), :controller => :database, :id => @database %> &#187; <%= h @table.name %></h2>
+<h2><%= link_to 'Databases', :controller => :home,
+                             :action     => :databases %> &#187;
+<%= link_to (h @database.name), :controller => :database,
+                                :id         => @database %> &#187;
+<%= h @table.name %></h2>
 
-<% form_tag ( {:controller => "database", :action => "export", :id => @database, :table => (h @table.name)}) do -%>
+<% form_tag ( { :controller => :database,
+                :action     => :export,
+                :id         => @database,
+                :table      => (h @table.name) } ) do -%>
 
 <table class="data">
-<thead>  
+<thead>
 <tr>
   <td></td>
   <td>Position</td>
@@ -24,6 +31,12 @@
 <tbody>
 <% if @fields.size > 0 -%>
 <%= render :partial => 'database/field', :collection => @fields %>
+<tr<%= alt %>>
+    <td colspan="11">
+      <%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
+      <%= submit_tag 'Export Data' %>
+    </td>
+</tr>
 <% else -%>
 <tr<%= alt %>>
   <td colspan="12">No fields found</td>
@@ -32,8 +45,4 @@
 </tbody>
 </table>
 
-<h2>
-<%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
-<%= submit_tag 'Export data' %>
-<h2>
 <% end -%>
