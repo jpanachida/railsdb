@@ -39,10 +39,35 @@ class DatabaseControllerTest < ActionController::TestCase
                                        1 => { header[ 1 ] => '1' } },
                           :app_value => { 'id' => RailsdbConfig::ExportFormat.csv.to_s } },
                         { :user_id => user.id }
+    assert_equal 'text/csv', @response.headers['type']
     assert_equal driver_export.collect { |e| "#{ e[0] },#{ e[1] }" }.join( $/ ),
                  @response.body
   end
 
+  def test_export_without_selected_rows
+    user = users( :railsdb )
+    post :export_table, { :id     => 1,
+                          :table  => 'drivers',
+                          :fields => { },
+                          :app_value => { 'id' => RailsdbConfig::ExportFormat.csv.to_s } },
+                        { :user_id => user.id }
+    assert_redirected_to(:controller => :database, :action => :table)
+    assert_equal 'Select fields to export', flash[:notice]
+  end
+
+  def test_export_table_without_data
+    user = users( :railsdb )
+    AppValue.delete_all
+    post :export_table, { :id     => 1,
+                          :table  => 'app_values',
+                          :fields => { 0 => { header[ 0 ] => '1' },
+                                       1 => { header[ 1 ] => '1' } },
+                          :app_value => { 'id' => RailsdbConfig::ExportFormat.csv.to_s } },
+                        { :user_id => user.id }
+    assert_redirected_to(:controller => :database, :action => :table)
+    assert_equal 'Table is empty', flash[:notice]                      
+  end
+  
   private
 
   def driver_export
@@ -52,7 +77,7 @@ class DatabaseControllerTest < ActionController::TestCase
       [ drivers( :postgresql ).id, drivers( :postgresql ).name ],
       [ drivers( :oracle     ).id, drivers( :oracle     ).name ] ]
   end
-
+  
   def header
     %w( id name )
   end

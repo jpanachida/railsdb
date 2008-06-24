@@ -33,12 +33,12 @@
 <% if @fields.size > 0 -%>
 <%= render :partial => 'database/field', :collection => @fields %>
 <tr<%= alt %>>
-  <td colspan="3">
-    <input id="check_all_rows" type="checkbox" checked="checked"
+  <td colspan="1">
+    <input id="check_all_rows" type="checkbox" checked="checked" title="Select/Deselect all rows"
       onclick="Form.getInputs('data_form','checkbox').each(
-        function(box){box.checked = $('check_all_rows').checked})">Select all rows</input>
+        function(box){box.checked = $('check_all_rows').checked})" />
   </td>    
-  <td colspan="8">
+  <td colspan="10">
     <%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
     <%= submit_tag 'Export Data' %>
   </td>  

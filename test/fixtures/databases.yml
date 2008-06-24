@@ -2,7 +2,7 @@ sqlite3:
   id: 1
   driver_id: 1
   name: railsdb_sqlite3_test
-  path: <%=RAILS_ROOT%>/db/development.sqlite3
+  path: <%=RAILS_ROOT%>/db/test.sqlite3
   description: RailsDB SQLite3 test database
   host:
   username:
