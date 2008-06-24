@@ -1,16 +1,16 @@
 == RailsDB
 
-{RailsDB}[http://railsdb.org/] is a web application written in Ruby using the Ruby on Rails web framework to provide a generic interface to popular open source databases such as MySQL, PostgreSQL, and SQLite.
+{RailsDB}[http://railsdb.org/] is a web application written in Ruby using the Ruby on Rails web framework to provide a generic interface to popular databases such as SQLite, MySQL, PostgreSQL, and Oracle.
 
 === Prerequisites and Assumptions
 
-- {Ruby}[http://www.ruby-lang.org/] and {Ruby on Rails}[http://rubyonrails.com/] are required to run RailsDB.  Please visit those sites for installation instructions.
-- Rails depends on a stable version of Ruby, {version 1.8.6 is being recommended}[http://rubyonrails.com/down] currently.
+- {Ruby}[http://www.ruby-lang.org/] and {Ruby on Rails}[http://rubyonrails.com/] are required to run RailsDB. Please visit those sites for installation instructions.
+- Rails depends on a stable version of Ruby, {version 1.8.7 is being recommended for Rails 2.1.0}[http://rubyonrails.com/down] currently.
 - RailsDB may at any time depend on a specific version of Rails. Using something close to that version will usually work as well.  Check or update the RAILS_GEM_VERSION in config/environment.db as required.
 
 - You can install a specific version of Rails using gem, for example:
 
-    gem install rails -v=2.0.2
+    gem install rails -v=2.1.0
 
 - RailsDB is installed using rake commands.  Install rake:
 
@@ -23,15 +23,21 @@
 - Using RailsDB with MySQL requires the mysql gem.
 
     gem install mysql
-    
+
     or
-    
+
     gem install mysql -- --with-mysql-dir=/usr/local/mysql
 
 - Using RailsDB with PostgreSQL requires the postgres gem.
 
     gem install postgres
-    
+
+- Using RailsDB with Oracle requires the oracle gem.
+
+    gem install activerecord-oracle-adapter
+
+- You will also need to install individual Ruby database drivers as required.
+
 - RailsDB requires the paginator gem.
 
     gem install paginator
@@ -45,11 +51,15 @@
     RAILS_ENV=development rake db:migrate
 
 - If something goes wrong or you need to try again you can undo the migration back to the beginning:
-    
+
     RAILS_ENV=development rake db:migrate VERSION=0
-    
+
+    or
+
+    rm -f db/development.sqlite3
+
 - If you do not wish to use SQLite, then have a look at config/database.yml and setup another option.
-    
+
 - Start server:
 
     script/server
@@ -63,4 +73,6 @@
 
 === Finally..
 
-Run "rake doc:app" to regenerate API documentation for the models, controllers, helpers, and libraries.
+Run "rake doc:app" to regenerate API documentation for the models, controllers, helpers, and libraries.  Then visit railsdb/doc/app/index.html in your browser.
+
+Run "rake test:coverage" to execute the test suite.  Then visit: http://localhost:3000/coverage
