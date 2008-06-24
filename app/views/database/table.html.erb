@@ -4,10 +4,11 @@
                                 :id         => @database %> &#187;
 <%= h @table.name %></h2>
 
+
 <% form_tag ( { :controller => :database,
                 :action     => :export,
                 :id         => @database,
-                :table      => (h @table.name) } ) do -%>
+                :table      => (h @table.name) }, {:id => 'data_form'} ) do -%>
 
 <table class="data">
 <thead>
@@ -32,10 +33,15 @@
 <% if @fields.size > 0 -%>
 <%= render :partial => 'database/field', :collection => @fields %>
 <tr<%= alt %>>
-    <td colspan="11">
-      <%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
-      <%= submit_tag 'Export Data' %>
-    </td>
+  <td colspan="3">
+    <input id="check_all_rows" type="checkbox" checked="checked"
+      onclick="Form.getInputs('data_form','checkbox').each(
+        function(box){box.checked = $('check_all_rows').checked})">Select all rows</input>
+  </td>    
+  <td colspan="8">
+    <%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
+    <%= submit_tag 'Export Data' %>
+  </td>  
 </tr>
 <% else -%>
 <tr<%= alt %>>
