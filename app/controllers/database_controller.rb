@@ -4,6 +4,7 @@ class DatabaseController < ApplicationController
 
   require 'paginator'
   require 'export/dsv_exporter'
+  require 'export/yaml_exporter'
 
   include Switch
 
@@ -371,14 +372,19 @@ class DatabaseController < ApplicationController
         ext = 'csv'
         delimiter = ','
         type = 'text/csv'
+        exporter = DsvExporter.new( delimiter )
+        exporter.header = fields
       when RailsdbConfig::ExportFormat.tsv.to_s
         ext = 'txt'
         delimiter = "\t"
         type = 'text/tab-separated-values'
+        exporter = DsvExporter.new( delimiter )
+        exporter.header = fields        
+      when RailsdbConfig::ExportFormat.yaml.to_s
+        ext = 'yml'
+        type = 'text/yaml'
+        exporter = YamlExporter.new
     end
-    # TODO Move export to table model
-    exporter = DsvExporter.new( delimiter )
-    exporter.header = fields
     send_data exporter.export_as_text( data ),
               :filename => "#{ @database.name }_#{ params[:table] }_#{ Time.now.to_i }.#{ ext }",
               :type     => type

@@ -1,4 +1,6 @@
 class AppValue < ActiveRecord::Base
+   
+  include ExplicitPrimaryKey
   
   def self.export_formats
     find(:all, :select => 'id, name',
