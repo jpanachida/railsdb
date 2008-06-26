@@ -348,15 +348,16 @@ class DatabaseController < ApplicationController
                   :id         => @database,
                   :table      => @table.name
       return
-    end  
+    end
     fields = []
     keys.each{ |k| fields << params[:fields][ k ].keys[ 0 ] \
       if params[:fields][ k ].values[ 0 ] == '1'
     }
     select = fields.join( ',' )
+    order = fields.include?( 'id' ) ? 'id' : fields[ 0 ]
     rows = @table.find( :all,
                         :select => select,
-                        :order  => 'id' )
+                        :order  => order )
     if rows == []
       flash[:notice] = "Table is empty"
       redirect_to :controller => :database,
@@ -364,7 +365,7 @@ class DatabaseController < ApplicationController
                   :id         => @database,
                   :table      => @table.name
       return
-    end                        
+    end
     data = []
     rows.each { |r| data << fields.collect{ |f| r[ f ].to_s } }
     case params[:app_value][:id]
@@ -379,7 +380,7 @@ class DatabaseController < ApplicationController
         delimiter = "\t"
         type = 'text/tab-separated-values'
         exporter = DsvExporter.new( delimiter )
-        exporter.header = fields        
+        exporter.header = fields
       when RailsdbConfig::ExportFormat.yaml.to_s
         ext = 'yml'
         type = 'text/yaml'
