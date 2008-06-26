@@ -8,8 +8,7 @@
                                    :id         => @database,
                                    :table      => (h table.name),
                                    :action     => :insert } %>
-  
-  <% else -%>  
+  <% else -%>
     <%= link_to table.row_count, { :controller => :database,
                                    :id         => @database,
                                    :table      => (h table.name),

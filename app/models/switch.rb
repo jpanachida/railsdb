@@ -27,9 +27,7 @@ module Switch
       end
       klass = Class.new ActiveRecord::Base
       class_name = ALT_TABLE_NAMES.include?( name ) ? ALT_TABLE_NAMES[ name ] : name
-      unless Object.const_get class_name.singularize.camelize
-        Object.const_set class_name.singularize.camelize, klass
-      end
+      Object.const_set class_name.singularize.camelize, klass
       klass.set_table_name name
       yield class_name.singularize.camelize.constantize
     end
