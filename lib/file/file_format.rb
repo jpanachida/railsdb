@@ -1,18 +1,18 @@
 class FileFormat
   def self.mime_type(format)
-    case format
+    case format.to_s
       when RailsdbConfig::ExportFormat.csv.to_s       then 'text/csv'
       when RailsdbConfig::ExportFormat.tsv.to_s       then 'text/tab-separated-values'
       when RailsdbConfig::ExportFormat.yaml.to_s      then 'text/yaml'
       when RailsdbConfig::PackagingFormat.zip.to_s    then 'application/zip'
       when RailsdbConfig::PackagingFormat.tgz.to_s    then 'application/x-gzip'
-      when RailsdbConfig::PackagingFormat.bzip2.to_s  then 'application/x-bzip'        
+      when RailsdbConfig::PackagingFormat.bzip2.to_s  then 'application/x-bzip'
       else 'application/octet-stream'
     end
   end
   
   def self.extension(format)
-    case format
+    case format.to_s
       when RailsdbConfig::ExportFormat.csv.to_s       then 'csv'
       when RailsdbConfig::ExportFormat.tsv.to_s       then 'tsv'
       when RailsdbConfig::ExportFormat.yaml.to_s      then 'yml'
