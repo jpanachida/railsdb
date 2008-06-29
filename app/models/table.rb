@@ -1,7 +1,12 @@
+require 'export/table_export'
+
 class Table
 
+  include TableExport
   include Switch
 
+  attr_reader :cid
+  
   attr_accessor :database
   attr_accessor :name
   attr_accessor :driver

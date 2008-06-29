@@ -3,8 +3,7 @@ class DatabaseController < ApplicationController
   before_filter :check_perm
 
   require 'paginator'
-  require 'export/dsv_exporter'
-  require 'export/yaml_exporter'
+  require 'file/file_format'
 
   include Switch
 
@@ -23,10 +22,7 @@ class DatabaseController < ApplicationController
       else
         flash[:notice] = "row #{ params[:pk] } not found"
       end
-      redirect_to :controller => :database,
-                  :table      => @table.name,
-                  :action     => :browse,
-                  :id         => @database
+      redirect_to_table_page
     end
   end
 
@@ -41,10 +37,7 @@ class DatabaseController < ApplicationController
     if request.post? && @row
       @table.update_row( @row[ 'id' ], params[:row] )
       flash[:notice] = "row #{ @row[ 'id' ] } updated"
-      redirect_to :controller => :database,
-                  :action     => :browse,
-                  :table      => @table.name,
-                  :id         => @database
+      redirect_to_table_page
     end
   end
 
@@ -61,10 +54,7 @@ class DatabaseController < ApplicationController
         @table.create( params[params[:table].to_sym][x.to_s] )
       end
       flash[:notice] = "#{ params[params[:table].to_sym].size } objects added"
-      redirect_to :controller => :database,
-                  :table      => @table.name,
-                  :action     => :browse,
-                  :id         => @database
+      redirect_to_table_page
     end
   end
 
@@ -130,6 +120,8 @@ class DatabaseController < ApplicationController
                   :action     => :databases
     end
     get_database( params[:id] )
+    @export_formats = AppValue.export_formats
+    @export_packaging_formats = AppValue.export_packaging_formats    
     begin
       @tables = @database.tables
     rescue RuntimeError
@@ -305,10 +297,7 @@ class DatabaseController < ApplicationController
           flash.now[:notice] = "An error occured:<br /><br />#{ $!.to_s }"
         else
           flash[:notice] = 'field updated'
-          redirect_to :controller => :database,
-                      :action     => :table,
-                      :id         => @database,
-                      :table      => @table.name
+          redirect_to_table_page
         end
       end
     end
@@ -330,10 +319,7 @@ class DatabaseController < ApplicationController
     if request.post?
       @table.del_field( @field.name )
       flash[:notice] = 'field deleted'
-      redirect_to :controller => :database,
-                  :action     => :table,
-                  :id         => @database,
-                  :table      => @table.name
+      redirect_to_table_page
     end
   end
 
@@ -343,56 +329,67 @@ class DatabaseController < ApplicationController
     keys = params[:fields].delete_if{ |k,v| v.values[0] == '0' }.keys.sort
     if keys == []
       flash[:notice] = "Select fields to export"
-      redirect_to :controller => :database,
-                  :action     => :table,
-                  :id         => @database,
-                  :table      => @table.name
+      redirect_to_table_page
       return
     end
     fields = []
     keys.each{ |k| fields << params[:fields][ k ].keys[ 0 ] \
       if params[:fields][ k ].values[ 0 ] == '1'
     }
-    select = fields.join( ',' )
-    order = fields.include?( 'id' ) ? 'id' : fields[ 0 ]
-    rows = @table.find( :all,
-                        :select => select,
-                        :order  => order )
-    if rows == []
-      flash[:notice] = "Table is empty"
-      redirect_to :controller => :database,
-                  :action     => :table,
-                  :id         => @database,
-                  :table      => @table.name
+    format = params[:file_format][:id]
+    filename = @table.export_table_filename(FileFormat.extension(format), true)
+    begin
+      send_data(@table.export_rows(fields, format),
+        :filename => filename,
+        :type => FileFormat.mime_type(format))
+    rescue
+      flash[:notice] = 'Could not create export file'
+      redirect_to_table_page
       return
     end
-    data = []
-    rows.each { |r| data << fields.collect{ |f| r[ f ].to_s } }
-    case params[:app_value][:id]
-      when RailsdbConfig::ExportFormat.csv.to_s
-        ext = 'csv'
-        delimiter = ','
-        type = 'text/csv'
-        exporter = DsvExporter.new( delimiter )
-        exporter.header = fields
-      when RailsdbConfig::ExportFormat.tsv.to_s
-        ext = 'txt'
-        delimiter = "\t"
-        type = 'text/tab-separated-values'
-        exporter = DsvExporter.new( delimiter )
-        exporter.header = fields
-      when RailsdbConfig::ExportFormat.yaml.to_s
-        ext = 'yml'
-        type = 'text/yaml'
-        exporter = YamlExporter.new
-    end
-    send_data exporter.export_as_text( data ),
-              :filename => "#{ @database.name }_#{ params[:table] }_#{ Time.now.to_i }.#{ ext }",
-              :type     => type
   end
 
+  def export_database
+    get_database( params[:id] )
+    keys = params[:table_sel].delete_if{ |k,v| v.values[0] == '0' }.keys.sort
+    if keys == []
+      flash[:notice] = "Select tables to export"
+      redirect_to_database_page
+      return
+    end
+    table_names = []
+    keys.each{ |k| table_names << params[:table_sel][ k ].keys[ 0 ] \
+      if params[:table_sel][ k ].values[ 0 ] == '1'
+    }
+    file_format = params[:file_format][:id]
+    packaging_format = params[:packaging_format][:id]
+    path = @database.create_export_dir_struct(table_names, file_format)
+    export_bundle_path = @database.create_export_bundle(path[:tmp_path], path[:dir_name],
+      packaging_format)
+    begin
+      send_file(export_bundle_path, :type => FileFormat.mime_type(packaging_format))
+    rescue
+      flash[:notice] = 'Could not create export file. Do you have appropriate file archiver installed?'
+      redirect_to_database_page
+      return
+    end
+  end
+  
   private
-
+   
+  def redirect_to_table_page
+    redirect_to :controller => :database,
+                :action     => :table,
+                :id         => @database,
+                :table      => @table.name
+  end
+  
+  def redirect_to_database_page
+    redirect_to :controller => :database,
+                :action     => :index,
+                :id         => @database
+  end  
+  
   #
   # Check site login
   #

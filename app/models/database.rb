@@ -1,6 +1,9 @@
+require 'export/database_export'
+
 class Database < ActiveRecord::Base
 
   include Switch
+  include DatabaseExport
 
   belongs_to :driver
 

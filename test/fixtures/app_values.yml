@@ -1,24 +1,36 @@
 csv:
-  id: 1
-  dict_id: 1
+  id: <%=RailsdbConfig::ExportFormat.csv%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_format%>
   name: CSV_TEST
   desc: Test Comma Separated Values
   code: CSV
 tsv:
-  id: 2
-  dict_id: 1
+  id: <%=RailsdbConfig::ExportFormat.tsv%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_format%>
   name: TSV_TEST
   desc: Test tab Separated Values
   code: TSV
+yaml:
+  id: <%=RailsdbConfig::ExportFormat.yaml%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_format%>
+  name: YAML_TEST
+  desc: YAML Ain't Markup Language
+  code: YAML
 zip:
-  id: 3
-  dict_id: 2
+  id: <%=RailsdbConfig::PackagingFormat.zip%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
   name: Zip
   desc: Test zip archival format
   code: ZIP
 tgz:
-  id: 5
-  dict_id: 2
+  id: <%=RailsdbConfig::PackagingFormat.tgz%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
   name: Tgz
   desc: Test tgz archival format
   code: TGZ
+bzip2:
+  id: <%=RailsdbConfig::PackagingFormat.bzip2%>
+  dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
+  name: Bzip2
+  desc: Test bzip2 archival format
+  code: BZIP2

@@ -1,4 +1,5 @@
 <tr<%= alt %>>
+  <td><%= check_box "table_sel[#{ table.id.abs }]", (h table.name), :checked => 'checked' %></td>
   <td><%= link_to (h table.name), :controller => :database,
                                   :id         => @database,
                                   :action     => :table,

@@ -39,7 +39,7 @@
         function(box){box.checked = $('check_all_rows').checked})" />
   </td>    
   <td colspan="10">
-    <%= collection_select(:app_value, :id, @export_formats, :id, :name) %>
+    <%= collection_select(:file_format, :id, @export_formats, :id, :name) %>
     <%= submit_tag 'Export Data' %>
   </td>  
 </tr>

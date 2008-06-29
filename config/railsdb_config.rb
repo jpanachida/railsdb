@@ -2,9 +2,9 @@ require 'active_support'
  
 module RailsdbConfig
     module Dictionary
-      mattr_reader :export_format, :export_packaging
+      mattr_reader :export_format, :export_packaging_format
       @@export_format = 1
-      @@export_packaging = 2
+      @@export_packaging_format = 2
     end
 
     module ExportFormat
@@ -14,7 +14,7 @@ module RailsdbConfig
       @@xml = 3
       @@yaml = 4
       @@sql = 5   
-     end
+    end
     
     module PackagingFormat
       mattr_reader :zip, :bzip2, :tgz

@@ -1,8 +1,14 @@
 <h2><%= link_to 'Databases', :controller => :home, :action => :databases %> &#187; &quot;<%= h @database.name %>&quot; Database</h2>
 
+<% form_tag({ :controller => :database,
+              :action     => :export_db,
+              :id         => @database },
+            {:id => 'data_form'}) do -%>
+
 <table class="data">
 <thead>  
 <tr>
+  <td></td>
   <td>Table</td>
   <td>Rows</td>
   <td><%= link_to 'Add Table', {  :controller => :database,
@@ -14,6 +20,18 @@
 <tbody>
 <% if @tables.size > 0 -%>
 <%= render :partial => 'database/table', :collection => @tables %>
+<tr<%= alt %>>
+  <td colspan="1">
+    <input id="check_all_rows" type="checkbox" checked="checked" title="Select/Deselect all rows"
+      onclick="Form.getInputs('data_form','checkbox').each(
+        function(box){box.checked = $('check_all_rows').checked})" />
+  </td>    
+  <td colspan="10">
+    <%= collection_select(:file_format, :id, @export_formats, :id, :name) %>
+    <%= collection_select(:packaging_format, :id, @export_packaging_formats, :id, :name) %>
+    <%= submit_tag 'Export Data' %>
+  </td>  
+</tr>
 <% else -%>
 <tr<%= alt %>>
   <td colspan="4">No tables found</td>
@@ -21,3 +39,5 @@
 <% end -%>
 </tbody>
 </table>
+
+<% end -%>

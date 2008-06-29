@@ -39,17 +39,17 @@ class CreateAppValues < ActiveRecord::Migration
                 
     # Packaging format
     AppValue.create( :pk => RailsdbConfig::PackagingFormat.zip,
-                  :dict_id => RailsdbConfig::Dictionary.export_packaging,
+                  :dict_id => RailsdbConfig::Dictionary.export_packaging_format,
                   :name => 'Zip',
                   :desc => 'Zip archival format',
                   :code => 'ZIP' )
     AppValue.create( :pk => RailsdbConfig::PackagingFormat.bzip2,
-                  :dict_id => RailsdbConfig::Dictionary.export_packaging,
+                  :dict_id => RailsdbConfig::Dictionary.export_packaging_format,
                   :name => 'Bzip2',
                   :desc => 'Bzip2 archival format',
                   :code => 'BZIP2' )
     AppValue.create( :pk => RailsdbConfig::PackagingFormat.tgz,
-                  :dict_id => RailsdbConfig::Dictionary.export_packaging,
+                  :dict_id => RailsdbConfig::Dictionary.export_packaging_format,
                   :name => 'Tgz',
                   :desc => 'Tgz archival format',
                   :code => 'TGZ' )        
