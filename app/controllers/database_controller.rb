@@ -363,10 +363,10 @@ class DatabaseController < ApplicationController
     }
     file_format = params[:file_format][:id]
     packaging_format = params[:packaging_format][:id]
-    path = @database.create_export_dir_struct(table_names, file_format)
-    export_bundle_path = @database.create_export_bundle(path[:tmp_path], path[:dir_name],
-      packaging_format)
     begin
+      path = @database.create_export_dir_struct(table_names, file_format)
+      export_bundle_path = @database.create_export_bundle(path[:tmp_path], path[:dir_name],
+        packaging_format)
       send_file(export_bundle_path, :type => FileFormat.mime_type(packaging_format))
     rescue
       flash[:notice] = 'Could not create export file. Do you have appropriate file archiver installed?'
