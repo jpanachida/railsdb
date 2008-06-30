@@ -207,7 +207,7 @@ table.data thead a:hover
 
 #menu table
 {
-  margin:               4px 10px 0 0;
+  margin:               4px 0 0 0;
 }
 
 #menu table td
@@ -228,6 +228,11 @@ table.data thead a:hover
 {
   color:                #000;
   background-color:     inherit;
+}
+
+#content
+{
+  margin:               0 0 0 144px;
 }
 
 table.tight
