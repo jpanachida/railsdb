@@ -2,7 +2,7 @@
                              :action     => :databases %> &#187;
 <%= link_to (h @database.name), :controller => :database,
                                 :id         => @database %> &#187;
-<%= h @table.name %></h2>
+&quot;<%= h @table.name %>&quot; Table</h2>
 
 
 <% form_tag ( { :controller => :database,
@@ -37,11 +37,11 @@
     <input id="check_all_rows" type="checkbox" checked="checked" title="Select/Deselect all rows"
       onclick="Form.getInputs('data_form','checkbox').each(
         function(box){box.checked = $('check_all_rows').checked})" />
-  </td>    
+  </td>
   <td colspan="10">
     <%= collection_select(:file_format, :id, @export_formats, :id, :name) %>
     <%= submit_tag 'Export Data' %>
-  </td>  
+  </td>
 </tr>
 <% else -%>
 <tr<%= alt %>>

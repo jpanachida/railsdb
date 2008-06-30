@@ -121,7 +121,7 @@ class DatabaseController < ApplicationController
     end
     get_database( params[:id] )
     @export_formats = AppValue.export_formats
-    @export_packaging_formats = AppValue.export_packaging_formats    
+    @export_packaging_formats = AppValue.export_packaging_formats
     begin
       @tables = @database.tables
     rescue RuntimeError
@@ -374,22 +374,22 @@ class DatabaseController < ApplicationController
       return
     end
   end
-  
+
   private
-   
+
   def redirect_to_table_page
     redirect_to :controller => :database,
                 :action     => :table,
                 :id         => @database,
                 :table      => @table.name
   end
-  
+
   def redirect_to_database_page
     redirect_to :controller => :database,
                 :action     => :index,
                 :id         => @database
-  end  
-  
+  end
+
   #
   # Check site login
   #
