@@ -108,7 +108,7 @@ class DatabaseControllerTest < ActionController::TestCase
     assert_redirected_to(:controller => :database, :action => :index)
     assert_equal 'Select tables to export', flash[:notice]
   end
-  
+
   def test_export_database_failed
     user = users( :railsdb )
     Database.any_instance.stubs( :create_export_dir_struct ).raises(StandardError)
@@ -118,8 +118,107 @@ class DatabaseControllerTest < ActionController::TestCase
                              :file_format => { 'id' => RailsdbConfig::ExportFormat.csv.to_s },
                              :packaging_format => {'id' => RailsdbConfig::PackagingFormat.zip.to_s} },
                            { :user_id => user.id }
-    assert_redirected_to(:controller => :database, :action => :index)
-    assert_match /Could not create export file/, flash[:notice]                         
+    assert_redirected_to( :controller => :database, :action => :index )
+    assert_match( /Could not create export file/, flash[:notice] )
+  end
+
+  def test_create_delete_table
+    user = users( :railsdb )
+    database = databases( :sqlite3 )
+    new_table_name = 'new_test_table'
+    post :add_table, { :id => database.id,
+                       :name => new_table_name,
+                       :add_id => 1,
+                       :fields => { '1' => { :name => 'id',
+                                             :type => 'primary_key',
+                                             :null => '0',
+                                             :default => '',
+                                             :limit => '',
+                                             :scale => '',
+                                             :precision => '' },
+                                    '2' => { :name => 'name',
+                                             :type => 'string',
+                                             :null => '0',
+                                             :default => '',
+                                             :limit => '',
+                                             :scale => '',
+                                             :precision => '' } } },
+                     { :user_id => user.id }
+    table_names = database.tables.collect{ |t| t.name }
+    table_names_size_before = table_names.size
+    assert( table_names.include?( new_table_name ) )
+    post :del_table, { :id => 1,
+                       :table => new_table_name}
+    assert_equal( table_names_size_before - 1, database.tables.size )
+    table_names_after_deletion = database.tables.collect{ |t| t.name }
+    assert( !table_names_after_deletion.include?( new_table_name ) )
+  end
+
+  def test_create_table_without_fields
+    user = users( :railsdb )
+    database = databases( :sqlite3 )
+    new_table_name = 'new_test_table'
+    post :add_table, { :id => database.id,
+                       :name => new_table_name,
+                       :add_id => 1,
+                       :fields => { '1' => { :name => '',
+                                             :type => '',
+                                             :null => '0',
+                                             :default => '',
+                                             :limit => '',
+                                             :scale => '',
+                                             :precision => '' } } },
+                     { :user_id => user.id }
+    table_names = database.tables.collect{ |t| t.name }
+    table_names_size_before = table_names.size
+    assert( !table_names.include?( new_table_name ) )
+    assert_equal( table_names_size_before, database.tables.size )
+    assert_select( 'span.error', 'at least one field required' )
+  end
+
+  def test_create_table_with_invalid_type
+    user = users( :railsdb )
+    database = databases( :sqlite3 )
+    new_table_name = 'new_test_table'
+    post :add_table, { :id => database.id,
+                       :name => new_table_name,
+                       :add_id => 1,
+                       :fields => { '1' => { :name => 'id',
+                                             :type => 'invalid_type',
+                                             :null => '0',
+                                             :default => '',
+                                             :limit => '',
+                                             :scale => '',
+                                             :precision => '' } } },
+                     { :user_id => user.id }
+    table_names = database.tables.collect{ |t| t.name }
+    table_names_size_before = table_names.size
+    assert( !table_names.include?( new_table_name ) )
+    assert_equal( table_names_size_before, database.tables.size )
+    assert_select( 'span.error', 'valid field type required' )
+  end
+
+  def test_create_table_with_error
+    user = users( :railsdb )
+    database = databases( :sqlite3 )
+    Database.any_instance.stubs( :create_tbl ).raises(RuntimeError)
+    new_table_name = 'new_test_table'
+    post :add_table, { :id => database.id,
+                       :name => new_table_name,
+                       :add_id => 1,
+                       :fields => { '1' => { :name => 'id',
+                                             :type => 'primary_key',
+                                             :null => '0',
+                                             :default => '',
+                                             :limit => '',
+                                             :scale => '',
+                                             :precision => '' } } },
+                     { :user_id => user.id }
+    table_names = database.tables.collect{ |t| t.name }
+    table_names_size_before = table_names.size
+    assert( !table_names.include?( new_table_name ) )
+    assert_equal( table_names_size_before, database.tables.size )
+    assert_select( 'p.error', /^An error occured:/ )
   end
 
   private

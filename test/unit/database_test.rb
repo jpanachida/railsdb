@@ -118,14 +118,14 @@ class DatabaseTest < ActiveSupport::TestCase
     assert_equal( {:path => File.join('/tmp_path', 'dir_name'), :tmp_path => 'tmp_path', :dir_name => 'dir_name'},
       @db_sqlite.create_export_dir_struct(['drivers'], RailsdbConfig::ExportFormat.csv) )
   end
-  
+
   def test_database_create_export_bundle
     @db_sqlite.expects( :create_export_bundle ).with('/path', 'dir_name', RailsdbConfig::PackagingFormat.zip).
       returns('/path/dir_name.zip')
     assert_equal("#{File.join('/path', 'dir_name')}.#{FileFormat.extension(RailsdbConfig::PackagingFormat.zip)}",
       @db_sqlite.create_export_bundle( '/path', 'dir_name', RailsdbConfig::PackagingFormat.zip ) )
   end
-  
+
   def test_export_table_filename
     @db_sqlite.tables.each do |t|
       table = @db_sqlite.get_table(t.name)
