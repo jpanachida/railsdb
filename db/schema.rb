@@ -34,9 +34,7 @@ ActiveRecord::Schema.define(:version => 9) do
   end
 
   create_table "drivers", :force => true do |t|
-    t.string   "name",       :limit => 64
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name", :limit => 16, :null => false
   end
 
   create_table "group_permissions", :force => true do |t|
