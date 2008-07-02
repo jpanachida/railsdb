@@ -163,6 +163,15 @@ class DatabaseTest < ActiveSupport::TestCase
     table_names = @db_sqlite.tables.collect{ |t| t.name }
     table_names_size_before = table_names.size
     assert( table_names.include?( new_table_name ) )
+
+    new_table = @db_sqlite.get_table(new_table_name )
+    assert_equal( create_table_params[:fields].size, new_table.field_count )
+    new_field_name = create_table_params[:fields]['1'][:name]
+    assert_equal( new_field_name, new_table.get_field( new_field_name ).name )
+    assert_equal( 'INTEGER', new_table.get_field( new_field_name ).type )
+    not_existing_field = 'x_not_existing_field_x'
+    assert( new_table.get_field( not_existing_field ).nil? )
+
     @db_sqlite.del_table( new_table_name )
     assert_equal( table_names_size_before - 1, @db_sqlite.tables.size )
     table_names_after_deletion = @db_sqlite.tables.collect{ |t| t.name }
