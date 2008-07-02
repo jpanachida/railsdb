@@ -85,16 +85,18 @@ class DatabaseControllerTest < ActionController::TestCase
   end
 
   def test_export_database
-    user = users( :railsdb )
-    post :export_database, { :id     => 1,
-                             :table  => 'app_values',
-                             :table_sel => { 0 => { database_export_tables[ 0 ] => '1' } },
-                             :file_format => { 'id' => RailsdbConfig::ExportFormat.csv.to_s },
-                             :packaging_format => {'id' => RailsdbConfig::PackagingFormat.zip.to_s} },
-                           { :user_id => user.id }
-    assert_equal( FileFormat.mime_type(RailsdbConfig::PackagingFormat.zip), @response.headers['type'] )
-    assert_not_nil( @response )
-    assert_kind_of( Proc, @response.body )
+    packaging_formats.each do |pf|
+      user = users( :railsdb )
+      post :export_database, { :id     => 1,
+                               :table  => 'app_values',
+                               :table_sel => { 0 => { database_export_tables[ 0 ] => '1' } },
+                               :file_format => { 'id' => RailsdbConfig::ExportFormat.csv.to_s },
+                               :packaging_format => {'id' => pf.to_s} },
+                             { :user_id => user.id }
+      assert_equal( FileFormat.mime_type(pf), @response.headers['type'] )
+      assert_not_nil( @response )
+      assert_kind_of( Proc, @response.body )
+    end
   end
 
   def test_export_database_without_selected_rows
@@ -237,6 +239,11 @@ class DatabaseControllerTest < ActionController::TestCase
 
   def database_export_tables
     %w{ drivers }
+  end
+
+  def packaging_formats
+    [ RailsdbConfig::PackagingFormat.zip, RailsdbConfig::PackagingFormat.tgz,
+      RailsdbConfig::PackagingFormat.bzip2 ]
   end
 
 end
