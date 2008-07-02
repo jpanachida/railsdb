@@ -158,6 +158,17 @@ class DatabaseTest < ActiveSupport::TestCase
       table.export_rows(header.flatten, RailsdbConfig::ExportFormat.yaml)
   end
 
+  def test_create_and_delete_table
+    @db_sqlite.create_tbl(create_table_params)
+    table_names = @db_sqlite.tables.collect{ |t| t.name }
+    table_names_size_before = table_names.size
+    assert( table_names.include?( new_table_name ) )
+    @db_sqlite.del_table( new_table_name )
+    assert_equal( table_names_size_before - 1, @db_sqlite.tables.size )
+    table_names_after_deletion = @db_sqlite.tables.collect{ |t| t.name }
+    assert( !table_names_after_deletion.include?( new_table_name ) )
+  end
+
   private
 
   def weird_filenames
@@ -188,6 +199,23 @@ class DatabaseTest < ActiveSupport::TestCase
 
   def header
     [%w( id name )]
+  end
+
+  def create_table_params
+    { :id => @db_sqlite.id,
+      :name => new_table_name,
+      :add_id => 1,
+      :fields => { '1' => {     :name => 'id',
+                                :type => 'primary_key',
+                                :null => '0',
+                                :default => '',
+                                :limit => '',
+                                :scale => '',
+                                :precision => '' } } }
+  end
+
+  def new_table_name
+    'new_table_name'
   end
 
 end
