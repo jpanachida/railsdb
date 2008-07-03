@@ -3,5 +3,7 @@ coverage.data
 db/*.sqlite3
 doc/app
 log/*.log
-public/coverage
+public/coverage/functional
+public/coverage/integration
+public/coverage/unit
 railsdb-*.gem
