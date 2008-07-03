@@ -1,8 +1,18 @@
-require File.dirname(__FILE__) + '/../test_helper'
+
+require File.dirname( __FILE__ ) + '/../test_helper'
 
 class DriverTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+
+  def test_invalid
+    driver = Driver.new
+    assert !driver.valid?
+    assert driver.errors.invalid?( :name )
   end
+
+  def test_name_length
+    driver = Driver.new( :name => 'x' * 17 )
+    assert !driver.valid?
+    assert driver.errors.invalid?( :name )
+  end
+
 end
