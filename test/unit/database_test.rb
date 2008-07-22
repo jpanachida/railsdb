@@ -66,10 +66,10 @@ class DatabaseTest < ActiveSupport::TestCase
   end
 
   def test_delete_row
-    table = @db_sqlite.get_table( 'drivers' )
-    count = table.row_count
+    table = @db_sqlite.get_table( 'app_values' )
+    row_count_before_deletion = table.row_count
     table.del_row( 4 )
-    assert table.row_count < count
+    assert_equal( table.row_count, row_count_before_deletion - 1 )
   end
 
   def test_sanitize_filenames
@@ -81,10 +81,10 @@ class DatabaseTest < ActiveSupport::TestCase
   end
 
   def test_update_row
-    table = @db_sqlite.get_table( 'drivers' )
-    row = table.find( :all, :conditions => [ 'id = 3' ] ).first
+    table = @db_sqlite.get_table( 'app_values' )
+    row = table.find( :all, :conditions => [ 'id = 4' ] ).first
     table.update_row( row['id'], :name => "altered_#{ row['name'] }" )
-    altered = table.find( :all, :conditions => [ 'id = 3' ] ).first
+    altered = table.find( :all, :conditions => [ 'id = 4' ] ).first
     assert_not_equal row['name'], altered['name']
   end
 
@@ -98,18 +98,24 @@ class DatabaseTest < ActiveSupport::TestCase
   end
 
   def test_add_fields
-#    table = @db_sqlite.get_table( 'drivers' )
-#    assert !table.has_field?( 'foo' )
-#    assert !table.has_field?( 'bar' )
-#    params = { :fields => { 1 => { :name  => 'foo',
-#                                   :type  => 'string',
-#                                   :limit => 255 },
-#                            2 => { :name  => 'bar',
-#                                   :type  => 'string',
-#                                   :limit => 255 } } }
-#    table.add_fields( params )
-#    assert table.has_field?( 'foo' )
-#    assert table.has_field?( 'bar' )
+    table = @db_sqlite.get_table( 'drivers' )
+    assert !table.has_field?( 'foo' )
+    assert !table.has_field?( 'bar' )
+    params = { :fields => { '1' => { :name  => 'foo',
+                                   :type  => 'string',
+                                   :default => '',
+                                   :scale => '',
+                                   :precision => '',
+                                   :limit => '255' },
+                            '2' => { :name  => 'bar',
+                                   :type  => 'string',
+                                   :default => '',
+                                   :scale => '',
+                                   :precision => '',
+                                   :limit => '255' } } }
+    table.add_fields( params )
+    assert table.has_field?( 'foo' )
+    assert table.has_field?( 'bar' )
   end
 
   def test_database_create_export_dir_struct
@@ -141,21 +147,21 @@ class DatabaseTest < ActiveSupport::TestCase
   end
 
   def test_table_csv_export_rows
-    table = @db_sqlite.get_table('drivers')
-    assert_equal driver_export.collect { |e| "#{ e[0] },#{ e[1] }" }.join( $/ ),
-      table.export_rows(header.flatten, RailsdbConfig::ExportFormat.csv)
+    table = @db_sqlite.get_table('app_values')
+    assert_equal values.collect { |e| "#{ e[0] },#{ e[1] }" }.join( $/ ),
+      table.export_rows(values_header.flatten, RailsdbConfig::ExportFormat.csv)
   end
 
   def test_table_tsv_export_rows
-    table = @db_sqlite.get_table('drivers')
-    assert_equal driver_export.collect { |e| "#{ e[0] }\t#{ e[1] }" }.join( $/ ),
-      table.export_rows(header.flatten, RailsdbConfig::ExportFormat.tsv)
+    table = @db_sqlite.get_table('app_values')
+    assert_equal values.collect { |e| "#{ e[0] }\t#{ e[1] }" }.join( $/ ),
+      table.export_rows(values_header.flatten, RailsdbConfig::ExportFormat.tsv)
   end
 
   def test_table_yaml_export_rows
-    table = @db_sqlite.get_table('drivers')
-    assert_equal driver_data.collect { |e| e.to_yaml }.to_s,
-      table.export_rows(header.flatten, RailsdbConfig::ExportFormat.yaml)
+    table = @db_sqlite.get_table('app_values')
+    assert_equal values_data.collect { |e| e.to_yaml }.to_s,
+      table.export_rows(values_header.flatten, RailsdbConfig::ExportFormat.yaml)
   end
 
   def test_create_and_delete_table
@@ -195,18 +201,20 @@ class DatabaseTest < ActiveSupport::TestCase
       RailsdbConfig::ExportFormat.yaml.to_s ]
   end
 
-  def driver_export
-    header + driver_data
+  def values
+    values_header + values_data
   end
 
-  def driver_data
-    [[ drivers( :sqlite3    ).id, drivers( :sqlite3    ).name ],
-      [ drivers( :mysql      ).id, drivers( :mysql      ).name ],
-      [ drivers( :postgresql ).id, drivers( :postgresql ).name ],
-      [ drivers( :oracle     ).id, drivers( :oracle     ).name ] ]
+  def values_data
+    [[  app_values( :csv   ).id, app_values( :csv   ).name ],
+      [ app_values( :tsv   ).id, app_values( :tsv   ).name ],
+      [ app_values( :yaml  ).id, app_values( :yaml  ).name ],
+      [ app_values( :zip   ).id, app_values( :zip   ).name ],
+      [ app_values( :bzip2 ).id, app_values( :bzip2 ).name ],
+      [ app_values( :tgz   ).id, app_values( :tgz   ).name ] ]
   end
 
-  def header
+  def values_header
     [%w( id name )]
   end
 

@@ -3,34 +3,34 @@ csv:
   dict_id: <%=RailsdbConfig::Dictionary.export_format%>
   name: CSV_TEST
   desc: Test Comma Separated Values
-  code: CSV
+  code: CSV_TEST
 tsv:
   id: <%=RailsdbConfig::ExportFormat.tsv%>
   dict_id: <%=RailsdbConfig::Dictionary.export_format%>
   name: TSV_TEST
   desc: Test tab Separated Values
-  code: TSV
+  code: TSV_TEST
 yaml:
   id: <%=RailsdbConfig::ExportFormat.yaml%>
   dict_id: <%=RailsdbConfig::Dictionary.export_format%>
   name: YAML_TEST
   desc: YAML Ain't Markup Language
-  code: YAML
+  code: YAML_TEST
 zip:
   id: <%=RailsdbConfig::PackagingFormat.zip%>
   dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
-  name: Zip
+  name: Zip_test
   desc: Test zip archival format
-  code: ZIP
+  code: ZIP_TEST
 tgz:
   id: <%=RailsdbConfig::PackagingFormat.tgz%>
   dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
-  name: Tgz
+  name: Tgz_test
   desc: Test tgz archival format
-  code: TGZ
+  code: TGZ_TEST
 bzip2:
   id: <%=RailsdbConfig::PackagingFormat.bzip2%>
   dict_id: <%=RailsdbConfig::Dictionary.export_packaging_format%>
-  name: Bzip2
+  name: Bzip2_test
   desc: Test bzip2 archival format
-  code: BZIP2
+  code: BZIP2_TEST
