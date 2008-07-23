@@ -88,7 +88,7 @@ class DatabaseTest < ActiveSupport::TestCase
     assert_not_equal row['name'], altered['name']
   end
 
-  def test_add_del_fields
+  def test_add_del_field
     table = @db_sqlite.get_table( 'drivers' )
     assert !table.has_field?( 'foobar' )
     table.add_field( 'foobar', :string, :limit => 255 )
@@ -98,7 +98,7 @@ class DatabaseTest < ActiveSupport::TestCase
   end
 
   def test_add_fields
-    table = @db_sqlite.get_table( 'drivers' )
+    table = @db_sqlite.get_table( 'app_values' )
     assert !table.has_field?( 'foo' )
     assert !table.has_field?( 'bar' )
     params = { :fields => { '1' => { :name  => 'foo',
@@ -116,7 +116,11 @@ class DatabaseTest < ActiveSupport::TestCase
     table.add_fields( params )
     assert table.has_field?( 'foo' )
     assert table.has_field?( 'bar' )
-  end
+    table.del_field( 'foo' )
+    assert !table.has_field?( 'foo' )
+    table.del_field( 'bar' )
+    assert !table.has_field?( 'bar' )
+  end  
 
   def test_database_create_export_dir_struct
     @db_sqlite.expects( :create_export_dir_struct ).with(['drivers'], RailsdbConfig::ExportFormat.csv).
